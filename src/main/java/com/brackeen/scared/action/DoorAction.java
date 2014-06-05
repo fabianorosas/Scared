@@ -46,7 +46,7 @@ public class DoorAction implements Action {
     private void setState(int state) {
         this.state = state;
         tile.state = state;
-        startRenderState = tile.renderState;
+        startRenderState = tile.getRenderState();
         ticks = 0;
     }
 
@@ -55,7 +55,7 @@ public class DoorAction implements Action {
     }
 
     public boolean isFinished() {
-        return (state == tile.state && (state == DONE || state == STAY_OPEN_FOREVER));
+        return (state == tile.getState() && (state == DONE || state == STAY_OPEN_FOREVER));
     }
 
     public void tick() {
@@ -67,15 +67,15 @@ public class DoorAction implements Action {
         ticks++;
         
         // State set outside of this handler
-        if (state != tile.state) {
-            setState(tile.state);
+        if (state != tile.getState()) {
+            setState(tile.getState());
         }
         
         switch (state) {
             case OPENING:
-                tile.renderState = startRenderState + ticks * Tile.RENDER_STATE_MAX / TICKS_TO_OPEN;
-                if (tile.renderState >= Tile.RENDER_STATE_MAX) {
-                    tile.renderState = Tile.RENDER_STATE_MAX;
+                tile.setRenderState(startRenderState + ticks * Tile.getRenderStateMax() / TICKS_TO_OPEN);
+                if (tile.getRenderState() >= Tile.getRenderStateMax()) {
+                    tile.setRenderState(Tile.getRenderStateMax());
                     setState(OPEN);
                 }
                 break;
@@ -93,13 +93,13 @@ public class DoorAction implements Action {
                     setState(OPENING);
                 }
                 else {
-                    if (tile.renderState == Tile.RENDER_STATE_MAX) {
+                    if (tile.getRenderState() == Tile.getRenderStateMax()) {
                         SoundPlayer3D.play("/sound/doorwoosh.wav", map.getPlayer(), x, y);
                     }
 
-                    tile.renderState = startRenderState - ticks * Tile.RENDER_STATE_MAX / TICKS_TO_CLOSE;
-                    if (tile.renderState <= 0) {
-                        tile.renderState = 0;
+                    tile.setRenderState(startRenderState - ticks * Tile.getRenderStateMax() / TICKS_TO_CLOSE);
+                    if (tile.getRenderState() <= 0) {
+                        tile.setRenderState(0);
                         setState(DONE);
                         SoundPlayer3D.play("/sound/doorclose.wav", map.getPlayer(), x, y);
                     }
@@ -107,7 +107,7 @@ public class DoorAction implements Action {
                 break;
 
             case STAY_OPEN_FOREVER:
-                tile.renderState = 0;
+                tile.setRenderState(0);
                 break;
         }
     }

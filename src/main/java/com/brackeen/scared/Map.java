@@ -107,84 +107,84 @@ public class Map {
 
                     switch (line.charAt(x)) {
                         case ' ':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             break;
                         case '#':
-                            tile.type = Tile.TYPE_WALL;
+                            tile.setType(Tile.getTypeWall());
                             break;
                         case 'A':
-                            tile.type = Tile.TYPE_DOOR;
+                            tile.setType(Tile.getTypeDoor());
                             break;
                         case 'B':
-                            tile.type = Tile.TYPE_DOOR;
-                            tile.subtype = 1;
+                            tile.setType(Tile.getTypeDoor());
+                            tile.setSubtype(1);
                             break;
                         case 'C':
-                            tile.type = Tile.TYPE_DOOR;
-                            tile.subtype = 2;
+                            tile.setType(Tile.getTypeDoor());
+                            tile.setSubtype(2);
                             break;
                         case 'D':
-                            tile.type = Tile.TYPE_DOOR;
-                            tile.subtype = 3;
+                            tile.setType(Tile.getTypeDoor());
+                            tile.setSubtype(3);
                             break;
                         case '-':
-                            tile.type = Tile.TYPE_WINDOW;
-                            tile.subtype = 1;
+                            tile.setType(Tile.getTypeWindow());
+                            tile.setSubtype(1);
                             break;
                         case '|':
-                            tile.type = Tile.TYPE_WINDOW;
-                            tile.subtype = 2;
+                            tile.setType(Tile.getTypeWindow());
+                            tile.setSubtype(2);
                             break;
                         case '+':
-                            tile.type = Tile.TYPE_WINDOW;
-                            tile.subtype = 3;
+                            tile.setType(Tile.getTypeWindow());
+                            tile.setSubtype(3);
                             break;
                         case '*':
-                            tile.type = Tile.TYPE_GENERATOR;
+                            tile.setType(Tile.getTypeGenerator());
                             electricityOn = false;
                             break;
                         case '@':
-                            tile.type = Tile.TYPE_MOVABLE_WALL;
+                            tile.setType(Tile.getTypeMovableWall());
                             numSecrets++;
                             break;
                         case 'X':
-                            tile.type = Tile.TYPE_EXIT;
+                            tile.setType(Tile.getTypeExit());
                             break;
                         case 'S':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             player.setLocation(x + 0.5f, y + 0.5f);
                             break;
                         case '^':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new Enemy(this, enemyTextures, x + 0.5f, y + 0.5f, 1));
                             numEnemies++;
                             break;
                         case 'b':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new Key(this, textureCache.get("/sprites/key01.png"), x + 0.5f, y + 0.5f, 1));
                             break;
                         case 'c':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new Key(this, textureCache.get("/sprites/key02.png"), x + 0.5f, y + 0.5f, 2));
                             break;
                         case 'd':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new Key(this, textureCache.get("/sprites/key03.png"), x + 0.5f, y + 0.5f, 3));
                             break;
                         case 'h':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new MedKit(this, textureCache.get("/sprites/medkit.png"), x + 0.5f, y + 0.5f, false));
                             break;
                         case 'H':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new MedKit(this, textureCache.get("/sprites/nuclear.png"), x + 0.5f, y + 0.5f, true));
                             break;
                         case 'm':
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             addEntity(new Ammo(this, textureCache.get("/sprites/ammo.png"), x + 0.5f, y + 0.5f));
                             break;
                         default:
-                            tile.type = Tile.TYPE_NOTHING;
+                            tile.setType(Tile.getTypeNothing());
                             App.log("Invalid char: " + line.charAt(x));
                             break;
                     }
@@ -202,10 +202,10 @@ public class Map {
                 for (int x = 0; x < width; x++) {
                     Tile tile = tiles[x][y];
 
-                    if (tile.type == Tile.TYPE_GENERATOR) {
+                    if (tile.getType() == Tile.getTypeGenerator()) {
                         tile.setTexture(textureCache.get("generator00.png"));
                     }
-                    else if (tile.type == Tile.TYPE_EXIT) {
+                    else if (tile.getType() == Tile.getTypeExit()) {
                         tile.setTexture(textureCache.get("exit00.png"));
                     }
                     else {
@@ -384,7 +384,7 @@ public class Map {
     private boolean isUnlockedDoor(int tileX, int tileY) {
         Tile tile = getTileAt(tileX, tileY);
         if (tile != null) {
-            if (tile.type == Tile.TYPE_DOOR && player.hasKey(tile.subtype)) {
+            if (tile.getType() == Tile.getTypeDoor() && player.hasKey(tile.getSubtype())) {
                 return true;
             }
         }
@@ -412,8 +412,8 @@ public class Map {
     }
 
     public void notifyPlayerTouchedWall(Tile tile, int tileX, int tileY) {
-        if (tile.type == Tile.TYPE_MOVABLE_WALL) { 
-            if (tile.state == MoveableWallAction.STATE_DONE) {
+        if (tile.getType() == Tile.getTypeMovableWall()) { 
+            if (tile.getState() == MoveableWallAction.STATE_DONE) {
                 int dx = tileX - (int)player.getX();
                 int dy = tileY - (int)player.getY();
 
@@ -423,31 +423,31 @@ public class Map {
                 }
             }
         }
-        else if (tile.type == Tile.TYPE_EXIT) { 
-            if (tile.state == 0) {
-                tile.state = 1;
+        else if (tile.getType() == Tile.getTypeExit()) { 
+            if (tile.getState() == 0) {
+                tile.setState(1);
                 tile.setTexture(exitButtonOnTexture);
                 App.getApp().getAudio("/sound/endlevel.wav", 1).play();
                 exitFound = true;
             }
         }
-        else if (tile.type == Tile.TYPE_GENERATOR) { 
-            if (tile.state == 0) {
-                tile.state = 1;
+        else if (tile.getType() == Tile.getTypeGenerator()) { 
+            if (tile.getState() == 0) {
+                tile.setState(1);
                 tile.setTexture(generatorOnTexture);
                 actions.add(new GeneratorAction(this, tileX, tileY));
                 electricityOn = true;
                 setMessage("The power is now on");
             }
         }
-        else if (tile.type == Tile.TYPE_DOOR) {
+        else if (tile.getType() == Tile.getTypeDoor()) {
             if (tile != lastCollidedWall) {
                 lastCollidedWall = tile;
                 if (!electricityOn) {
                     setMessage("The power is off");
                     App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
                 }
-                else if (!player.hasKey(tile.subtype)) {
+                else if (!player.hasKey(tile.getSubtype())) {
                     setMessage("The door is locked");
                     App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
                 }

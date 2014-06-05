@@ -470,7 +470,7 @@ public class CollisionDetection {
                     collision |= WALL_COLLISION_SOUTH;
                 }
                 
-                if (isPlayer && tile != null && tile.renderState == 0) {
+                if (isPlayer && tile != null && tile.getRenderState() == 0) {
                     map.notifyPlayerTouchedWall(tile, tileX, tileY);
                 }
             }

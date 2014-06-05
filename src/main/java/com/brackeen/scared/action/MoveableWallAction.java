@@ -34,7 +34,7 @@ public class MoveableWallAction implements Action {
         
         Tile playerTile = map.getTileAt(playerTileX, playerTileY);
         tile = map.getTileAt(x, y);
-        tile.state = STATE_MOVING;
+        tile.setState(STATE_MOVING);
         
         map.setDefaultFloorTexture(playerTile.getTexture());
         floorTexture = playerTile.getTexture();
@@ -59,32 +59,32 @@ public class MoveableWallAction implements Action {
 
         if (ticks < TICKS_PER_TILE_MOVE) {
             ticks++;
-            tile.renderState = Tile.RENDER_STATE_MAX * ticks / TICKS_PER_TILE_MOVE;
+            tile.setRenderState(Tile.getRenderStateMax() * ticks / TICKS_PER_TILE_MOVE);
         }
         else {
             index++;
             SoftTexture texture = tile.getTexture();
             tile.setTexture(floorTexture);
-            tile.type = 0;
-            tile.subtype = 0;
-            tile.state = 0;
-            tile.renderState = 0;
+            tile.setType(0);
+            tile.setSubtype(0);
+            tile.setState(0);
+            tile.setRenderState(0);
 
             x += dx;
             y += dy;
 
             tile = map.getTileAt(x, y);
             tile.setTexture(texture);
-            tile.type = Tile.TYPE_MOVABLE_WALL;
-            tile.subtype = 0;
-            tile.state = STATE_MOVING;
-            tile.renderState = 0;
+            tile.setType(Tile.getTypeMovableWall());
+            tile.setSubtype(0);
+            tile.setState(STATE_MOVING);
+            tile.setRenderState(0);
 
             if (index == 2) {
                 index = 3;
-                tile.type = Tile.TYPE_WALL;
-                tile.state = 0;
-                tile.renderState = 0;
+                tile.setType(Tile.getTypeWall());
+                tile.setState(0);
+                tile.setRenderState(0);
             }
             ticks = 0;
         }

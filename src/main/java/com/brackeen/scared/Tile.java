@@ -6,32 +6,32 @@ import java.util.List;
 
 public class Tile {
     
-    public static final int RENDER_STATE_MAX = (1 << 16);
+    private static final int RENDER_STATE_MAX = (1 << 16);
     
-    public static final int TYPE_NOTHING = 0;
-    public static final int TYPE_WALL = 1;
-    public static final int TYPE_DOOR = 2;  //(subtype: key #)
-    public static final int TYPE_WINDOW = 3;  //(subtype: 1=west/east 2=north/south)
-    public static final int TYPE_GENERATOR = 4;
-    public static final int TYPE_MOVABLE_WALL = 5;
-    public static final int TYPE_EXIT = 6;
-    public static final int NUM_TYPES = 7;
+    private static final int TYPE_NOTHING = 0;
+    private static final int TYPE_WALL = 1;
+    private static final int TYPE_DOOR = 2;  //(subtype: key #)
+    private static final int TYPE_WINDOW = 3;  //(subtype: 1=west/east 2=north/south)
+    private static final int TYPE_GENERATOR = 4;
+    private static final int TYPE_MOVABLE_WALL = 5;
+    private static final int TYPE_EXIT = 6;
+    private static final int NUM_TYPES = 7;
     
-    public int type;
-    public int subtype;
-    public int state;
-    public int renderState;
-    public int renderVisible;
+    private int type;
+    private int subtype;
+    private int state;
+    private int renderState;
+    private int renderVisible;
     private SoftTexture texture;
     private List<Entity> entities;
     
     /* Checks if the tile is solid for collision purposes. */
     public boolean isSolid() {
-        if (type == TYPE_DOOR) {
-            return renderState < RENDER_STATE_MAX * 3 / 4;
+        if (getType() == getTypeDoor()) {
+            return getRenderState() < getRenderStateMax() * 3 / 4;
         }
         else {
-            return (type != TYPE_NOTHING);
+            return (getType() != getTypeNothing());
         }
     }
     
@@ -73,4 +73,80 @@ public class Tile {
             entities.remove(entity);
         }
     }
+
+	public static int getRenderStateMax() {
+		return RENDER_STATE_MAX;
+	}
+
+	public static int getTypeNothing() {
+		return TYPE_NOTHING;
+	}
+
+	public static int getTypeWall() {
+		return TYPE_WALL;
+	}
+
+	public static int getTypeDoor() {
+		return TYPE_DOOR;
+	}
+
+	public static int getTypeWindow() {
+		return TYPE_WINDOW;
+	}
+
+	public static int getTypeGenerator() {
+		return TYPE_GENERATOR;
+	}
+
+	public static int getTypeMovableWall() {
+		return TYPE_MOVABLE_WALL;
+	}
+
+	public static int getTypeExit() {
+		return TYPE_EXIT;
+	}
+
+	public static int getNumTypes() {
+		return NUM_TYPES;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getSubtype() {
+		return subtype;
+	}
+
+	public void setSubtype(int subtype) {
+		this.subtype = subtype;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public int getRenderState() {
+		return renderState;
+	}
+
+	public void setRenderState(int renderState) {
+		this.renderState = renderState;
+	}
+
+	public int getRenderVisible() {
+		return renderVisible;
+	}
+
+	public void setRenderVisible(int renderVisible) {
+		this.renderVisible = renderVisible;
+	}
 }

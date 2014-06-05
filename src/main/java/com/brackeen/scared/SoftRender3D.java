@@ -418,7 +418,7 @@ public class SoftRender3D extends View {
                     if (mapX != lastMapX || mapY != lastMapY) {
                         Tile tile = map.getTileAt(mapX, mapY);
                         
-                        if (tile == null || tile.type == Tile.TYPE_MOVABLE_WALL) {
+                        if (tile == null || tile.getType() == Tile.getTypeMovableWall()) {
                             textureData = defaultFloorTexture.getData();
                             textureSizeBits = defaultFloorTexture.getSizeBits();
                         }
@@ -591,7 +591,7 @@ public class SoftRender3D extends View {
         // Get visible objects
         List<Entity> visibleEntities = new ArrayList<Entity>();
         for (Tile tile : visibleFloors) {
-            tile.renderVisible = 0;
+            tile.setRenderVisible(0);
             List<Entity> entities = tile.getEntities();
             if (entities != null) {
                 for (Entity entity : entities) {
@@ -689,10 +689,10 @@ public class SoftRender3D extends View {
                 break;
             }
             
-            if (tile.type == Tile.TYPE_NOTHING) {
+            if (tile.getType() == Tile.getTypeNothing()) {
                 // Skip it
             }
-            else if (tile.type == Tile.TYPE_WALL || tile.type == Tile.TYPE_EXIT || tile.type == Tile.TYPE_GENERATOR) {
+            else if (tile.getType() == Tile.getTypeWall() || tile.getType() == Tile.getTypeExit() || tile.getType() == Tile.getTypeGenerator()) {
 
                 if (checkingY) {
                     sliver = fracPart(f_rayY);
@@ -705,13 +705,13 @@ public class SoftRender3D extends View {
                 
                 if (checkingY) {
                     Tile sideTile = map.getTileAt(tileX - dir, tileY);
-                    if (sideTile != null && sideTile.type == Tile.TYPE_DOOR) {
+                    if (sideTile != null && sideTile.getType() == Tile.getTypeDoor()) {
                         texture = doorSideTexture;
                     }
                 }
                 else {
                     Tile sideTile = map.getTileAt(tileX, tileY - dir);
-                    if (sideTile != null && sideTile.type == Tile.TYPE_DOOR) {
+                    if (sideTile != null && sideTile.getType() == Tile.getTypeDoor()) {
                         texture = doorSideTexture;
                     }
                 }
@@ -719,10 +719,10 @@ public class SoftRender3D extends View {
                 found = true;
                 break;
             }
-            else if (tile.type == Tile.TYPE_DOOR) {
+            else if (tile.getType() == Tile.getTypeDoor()) {
                 int f_extraX = f_rayDX/2;
                 int f_extraY = f_rayDY/2;
-                int s = tile.renderState;
+                int s = tile.getRenderState();
                 if (checkingY) {
                     sliver = fracPart(f_rayY + f_extraY);
                 }
@@ -734,12 +734,12 @@ public class SoftRender3D extends View {
                     sliver -= s;
                     f_rayX += f_extraX;
                     f_rayY += f_extraY;
-                    texture = doorTextures[tile.subtype];
+                    texture = doorTextures[tile.getSubtype()];
                     found = true;
                     break;
                 }
             }
-            else if (tile.type == Tile.TYPE_WINDOW && (tile.subtype & windowMask) != 0) {
+            else if (tile.getType() == Tile.getTypeWindow() && (tile.getSubtype() & windowMask) != 0) {
                 int f_extraX = f_rayDX/2;
                 int f_extraY = f_rayDY/2;
                 if (checkingY) {
@@ -758,9 +758,9 @@ public class SoftRender3D extends View {
                     break;
                 }
             }
-            else if (tile.type == Tile.TYPE_MOVABLE_WALL) {
-                int f_extraX = mul(tile.renderState, f_rayDX);
-                int f_extraY = mul(tile.renderState, f_rayDY);
+            else if (tile.getType() == Tile.getTypeMovableWall()) {
+                int f_extraX = mul(tile.getRenderState(), f_rayDX);
+                int f_extraY = mul(tile.getRenderState(), f_rayDY);
                 
                 boolean visible;
                 if (checkingY) {
@@ -820,7 +820,7 @@ public class SoftRender3D extends View {
         Tile centerTile = map.getTileAt(tileX, tileY);
         
         // If this tile has already been added as a center tile, do nothing.
-        if (centerTile.renderVisible == 2) {
+        if (centerTile.getRenderVisible() == 2) {
             return;
         }
         
@@ -828,8 +828,8 @@ public class SoftRender3D extends View {
         for (int x = tileX - 1; x <= tileX + 1; x++) {
             for (int y = tileY - 1; y <= tileY + 1; y++) {
                 Tile tile = map.getTileAt(x, y);
-                if (tile != null && tile.renderVisible == 0) {
-                    tile.renderVisible = 1;
+                if (tile != null && tile.getRenderVisible() == 0) {
+                    tile.setRenderVisible(1);
                     
                     visibleFloors.add(tile);
                 }
@@ -837,6 +837,6 @@ public class SoftRender3D extends View {
         }
         
         // Mark this tile as a center tile
-        centerTile.renderVisible = 2;
+        centerTile.setRenderVisible(2);
     }
 }
