@@ -35,7 +35,8 @@ public class Enemy extends Entity {
     private final Map map;
     private int state;
     private int health;
-    private final double p; //probability of changing states
+    //probability of changing states
+    private final double p;
     private int ticksRemaining;
     private int ticks;
     private double aimAngle;
@@ -92,7 +93,8 @@ public class Enemy extends Entity {
         if (this.state != state) {
             this.state = state;
             if (state == STATE_DEAD) {
-                setRadius(0); // Prevent future collisions
+            	// Prevent future collisions
+                setRadius(0); 
             }
             ticksRemaining = STATE_TICKS[state];
         }
@@ -136,7 +138,7 @@ public class Enemy extends Entity {
             Point2D.Float point = map.getWallCollision(getX(), getY(), (float)Math.toDegrees(angleToPlayer));
             if (point != null) {
                 List<Entity> playerHit = map.getCollisions(Player.class, getX(), getY(), point.x, point.y);
-                if (playerHit.isEmpty() == false) {
+                if (!playerHit.isEmpty()) {
                     isPlayerVisible = true;
                 }
             }
@@ -256,14 +258,15 @@ public class Enemy extends Entity {
                         Point2D.Float point = map.getWallCollision(getX(), getY(), (float)Math.toDegrees(aimAngle));
                         if (point != null) {
                             List<Entity> playerHit = map.getCollisions(Player.class, getX(), getY(), point.x, point.y);
-                            if (playerHit.isEmpty() == false) {
+                            if (!playerHit.isEmpty()) {
                                 // here, diffAngle is the differnce between the angle the
                                 // robot aimed at and the angle the player is currently at
                                 double diffAngle = Math.abs(aimAngle - angleToPlayer);
                                 int hitPoints = 0;
-                                if (diffAngle < .04) { // about 2.3 degrees
+                                // .04 is about 2.3 degrees and .25 about 15 degrees
+                                if (diffAngle < .04) { 
                                     hitPoints = 15 + (int)Math.round(Math.random() * 7);
-                                } else if (diffAngle < .25) { // about 15 degrees
+                                } else if (diffAngle < .25) {
                                     hitPoints = 3 + (int)Math.round(Math.random() * 5);
                                 }
                                 

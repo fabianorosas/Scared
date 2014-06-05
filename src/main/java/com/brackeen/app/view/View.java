@@ -355,7 +355,7 @@ public class View {
         if (local == null) {
             return false;
         }
-        return (local.x >= 0 && local.x < getWidth() && local.y >= 0 && local.y < getHeight());
+        return local.x >= 0 && local.x < getWidth() && local.y >= 0 && local.y < getHeight();
     }
     
     public View pick(float worldX, float worldY) {

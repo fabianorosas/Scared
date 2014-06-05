@@ -46,7 +46,7 @@ public class BitmapFont {
         if (Character.isLowerCase(ch) && !hasLowercase) {
             ch = Character.toUpperCase(ch);
         }
-        return (ch >= firstChar && ch < firstChar + numChars);
+        return ch >= firstChar && ch < firstChar + numChars;
     }
     
     public void drawString(Graphics2D g, String s) {

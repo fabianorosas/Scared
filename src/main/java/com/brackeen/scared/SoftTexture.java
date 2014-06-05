@@ -53,7 +53,8 @@ public class SoftTexture {
     private final int height;
     private final int sizeBits;
     private final int[] data;
-    private SoftTexture halfSizeTexture; // For mip-mapping
+    // For mip-mapping
+    private SoftTexture halfSizeTexture;
     
     public SoftTexture(int width, int height) {
         this.width = width;

@@ -49,7 +49,7 @@ public class MoveableWallAction implements Action {
     }
 
     public boolean isFinished() {
-        return (index > 2);
+        return index > 2;
     }
     
     public void tick() {

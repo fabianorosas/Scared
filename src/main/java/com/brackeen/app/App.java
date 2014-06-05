@@ -64,7 +64,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         }
     }
 
-    private final static float FRAME_RATE = 60;
+    private static final float FRAME_RATE = 60;
     private final Timer timer = new Timer((int)(1000 / FRAME_RATE), new ActionListener() {
 
         // Using Swing's Timer because it executes on the EDT, so there will be no threading issues.
@@ -289,7 +289,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     public abstract Scene createFirstScene();
     
     public boolean canPopScene() {
-        return sceneStack.isEmpty() == false;
+        return !sceneStack.isEmpty();
     }
     
     public void popScene() {
@@ -352,7 +352,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         View pick = null;
         mouseX = e.getX();
         mouseY = e.getY();
-        if (sceneStack.isEmpty() == false) {
+        if (!sceneStack.isEmpty()) {
             pick = sceneStack.peek().pick(e.getX(), e.getY());
         }
 

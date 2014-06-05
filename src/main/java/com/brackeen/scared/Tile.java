@@ -6,12 +6,14 @@ import java.util.List;
 
 public class Tile {
     
-    private static final int RENDER_STATE_MAX = (1 << 16);
+    private static final int RENDER_STATE_MAX = 1 << 16;
     
     private static final int TYPE_NOTHING = 0;
     private static final int TYPE_WALL = 1;
-    private static final int TYPE_DOOR = 2;  //(subtype: key #)
-    private static final int TYPE_WINDOW = 3;  //(subtype: 1=west/east 2=north/south)
+    //(subtype: key #)
+    private static final int TYPE_DOOR = 2;
+    //(subtype: 1=west/east 2=north/south)
+    private static final int TYPE_WINDOW = 3;
     private static final int TYPE_GENERATOR = 4;
     private static final int TYPE_MOVABLE_WALL = 5;
     private static final int TYPE_EXIT = 6;
@@ -30,7 +32,7 @@ public class Tile {
         if (getType() == getTypeDoor()) {
             return getRenderState() < getRenderStateMax() * 3 / 4;
         } else {
-            return (getType() != getTypeNothing());
+            return getType() != getTypeNothing();
         }
     }
     
@@ -39,7 +41,7 @@ public class Tile {
     }
     
     public boolean hasEntities() {
-        return (entities != null && !entities.isEmpty());
+        return entities != null && !entities.isEmpty();
     }
 
     public SoftTexture getTexture() {

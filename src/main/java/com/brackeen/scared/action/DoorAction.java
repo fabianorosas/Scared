@@ -12,8 +12,9 @@ public class DoorAction implements Action {
     public static final int OPEN = 2;
     public static final int CLOSING = 3;
     public static final int STAY_OPEN_FOREVER = 4;
-    
-    private static final int TICKS_TO_OPEN = 12; // Fast enough to not stop the player
+
+    // Fast enough to not stop the player
+    private static final int TICKS_TO_OPEN = 12;
     private static final int TICKS_TO_CLOSE = 24;
     private static final int TICKS_WAIT_BEFORE_CLOSING = 200;
     
@@ -55,7 +56,7 @@ public class DoorAction implements Action {
     }
 
     public boolean isFinished() {
-        return (state == tile.getState() && (state == DONE || state == STAY_OPEN_FOREVER));
+        return state == tile.getState() && (state == DONE || state == STAY_OPEN_FOREVER);
     }
 
     public void tick() {

@@ -504,8 +504,10 @@ public class GameScene extends Scene {
                     "cheat    Give yourself invincibility.\n" +
                     "debug    Show debug info.";
         } else if ("QUIT".equalsIgnoreCase(command)) {
-            App.getApp().popScene(); // Back to game
-            App.getApp().popScene(); // Back to title
+            // Back to game
+        	App.getApp().popScene();
+        	// Back to title
+            App.getApp().popScene();
             return "Quitting...";
         } else if ("4 8 15 16 23 42".equalsIgnoreCase(command)) {
             return "Timer reset to 108 minutes.";
@@ -519,7 +521,8 @@ public class GameScene extends Scene {
                     "entities=" + map.getNumEntities();
         } else if ("RESTART".equalsIgnoreCase(command)) {
             setLevel(level);
-            App.getApp().popScene(); // Back to game
+            // Back to game
+            App.getApp().popScene();
             return "Restarting level " + (level + 1) + "...";
         } else if ("FREEZE".equalsIgnoreCase(command)) {
             player.setFreezeEnemies(!player.isFreezeEnemies());
@@ -716,7 +719,8 @@ public class GameScene extends Scene {
         
         int weaponAimX = (int)crosshair.getX();
         float aimAngle = renderer.getAngleAt(weaponAimX);
-        aimAngle += Math.random() * 4 - 2; // +/- 2 degrees
+         // +/- 2 degrees
+        aimAngle += Math.random() * 4 - 2;
         
         Point2D.Float p = map.getWallCollision(player.getX(), player.getY(), aimAngle);
         if (p == null) {

@@ -56,8 +56,7 @@ public class SoftRender3D extends View {
     // Fixed-point math
     
     private static final int FRACTION_BITS = 16;
-    private static final int ONE = (1 << FRACTION_BITS);
-    private static final int ONE_HALF = ONE >> 1;
+    private static final int ONE = 1 << FRACTION_BITS;
     private static final int FRACTION_MASK = (1 << FRACTION_BITS) - 1;    
     
     private static int toFixedPoint(double n) {
@@ -72,10 +71,6 @@ public class SoftRender3D extends View {
         return f >> FRACTION_BITS;
     }
     
-    private static int toIntRound(int f) {
-        return toIntFloor(f + ONE_HALF);
-    }
-
     private static int toIntCeil(int f) {
         return -toIntFloor(-f);
     }
@@ -86,10 +81,6 @@ public class SoftRender3D extends View {
     
     private static int floor(int f) {
         return f & ~FRACTION_MASK;
-    }
-    
-    private static int ceil(int f) {
-        return -floor(-f);
     }
     
     private static int mul(int f1, int f2) {
@@ -327,7 +318,8 @@ public class SoftRender3D extends View {
             Ray ray = rays[x];
             if (ray.fDist >= 0 && ray.fDist < Integer.MAX_VALUE) {
                 int wallHeight = toIntCeil(div(fFocalDistance, ray.fDist));
-                wallHeight = (wallHeight + 1) & ~1; // Make it even, rounding up
+                // Make it even, rounding up
+                wallHeight = (wallHeight + 1) & ~1;
                 if (wallHeight > 0) {
                     int depth = toIntFloor(ray.fDist * DEPTH_SCALE);
                     int bottom = viewHeight / 2 + toIntFloor(wallHeight * fCameraZ) - 1;
@@ -560,10 +552,10 @@ public class SoftRender3D extends View {
             int dstColor = dstData[dstOffset];
             int dstR = (dstColor >> 16) & 0xff;
             int dstG = (dstColor >> 8) & 0xff;
-            int dstB = (dstColor & 0xff);
+            int dstB = dstColor & 0xff;
             int srcR = (srcColor >> 16) & 0xff;
             int srcG = (srcColor >> 8) & 0xff;
-            int srcB = (srcColor & 0xff);
+            int srcB = srcColor & 0xff;
             if (depth > 256) {
                 srcR = (srcR << 8) / depth;
                 srcG = (srcG << 8) / depth;

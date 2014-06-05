@@ -102,7 +102,7 @@ public class CollisionDetection {
                     movingEntity.setLocation(oldX + (u - d) * cos, oldY + (u - d) * sin);
                 } 
             }
-        } else { // collidingObjects.length == 2
+        } else { 
             // From "Intersection of two circles" by Paul Bourke
             // http://astronomy.swin.edu.au/~pbourke/geometry/2circle/
             
@@ -296,7 +296,7 @@ public class CollisionDetection {
     
     private void detectAndHandleWallCollisions(Entity entity, float oldX, float oldY) {
     
-        boolean isPlayer = (entity instanceof Player);
+        boolean isPlayer = entity instanceof Player;
         
         int collision = checkWallCollision(oldX, oldY, entity.getX(), entity.getY(), entity.getRadius(), isPlayer);        
         if (collision == WALL_COLLISION_NONE) {
