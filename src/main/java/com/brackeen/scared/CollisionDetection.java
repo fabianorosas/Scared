@@ -111,14 +111,14 @@ public class CollisionDetection {
             // From "Intersection of two circles" by Paul Bourke
             // http://astronomy.swin.edu.au/~pbourke/geometry/2circle/
             
-            Entity P0 = collidingEntities[0];
-            Entity P1 = collidingEntities[1];
+            Entity p0 = collidingEntities[0];
+            Entity p1 = collidingEntities[1];
             
-            float dx = P1.getX() - P0.getX();
-            float dy = P1.getY() - P0.getY();
+            float dx = p1.getX() - p0.getX();
+            float dy = p1.getY() - p0.getY();
             
-            float r0 = P0.getRadius() + movingEntity.getRadius();
-            float r1 = P1.getRadius() + movingEntity.getRadius();
+            float r0 = p0.getRadius() + movingEntity.getRadius();
+            float r1 = p1.getRadius() + movingEntity.getRadius();
             
             float r0Squared = r0 * r0;
             float r1Squared = r1 * r1;
@@ -144,8 +144,8 @@ public class CollisionDetection {
             
             float h = (float)Math.sqrt(hSquared);
             
-            float midX = P0.getX() + a * dx / d;
-            float midY = P0.getY() + a * dy / d;
+            float midX = p0.getX() + a * dx / d;
+            float midY = p0.getY() + a * dy / d;
             
             float sx = h * dy / d;
             float sy = h * dx / d;

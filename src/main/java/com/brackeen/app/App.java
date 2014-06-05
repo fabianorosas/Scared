@@ -64,8 +64,8 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         }
     }
 
-    private final static float frameRate = 60;
-    private final Timer timer = new Timer((int)(1000 / frameRate), new ActionListener() {
+    private final static float FRAME_RATE = 60;
+    private final Timer timer = new Timer((int)(1000 / FRAME_RATE), new ActionListener() {
 
         // Using Swing's Timer because it executes on the EDT, so there will be no threading issues.
         public void actionPerformed(ActionEvent ae) {
@@ -174,12 +174,12 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
             
             // Tick
             double elapsedTime = (System.nanoTime() - lastTime) / 1000000000.0 + remainingTime;
-            int ticks = Math.max(1, (int)(frameRate * elapsedTime));
+            int ticks = Math.max(1, (int)(FRAME_RATE * elapsedTime));
             if (ticks > 4) {
                 ticks = 4;
                 remainingTime = 0;
             } else {
-                remainingTime = Math.max(0, elapsedTime - ticks / frameRate);
+                remainingTime = Math.max(0, elapsedTime - ticks / FRAME_RATE);
             }
             for (int i = 0; i < ticks; i++) {
                 if (sceneStack.isEmpty()) {

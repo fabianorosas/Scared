@@ -107,13 +107,13 @@ public class SoftRender3D extends View {
     // Ray casting 
     
     private static class Ray {
-        int f_dist;
+        int fDist;
         int sliver;
         int floorDrawY;
         SoftTexture texture;
         
         public void reset() {
-            f_dist = Integer.MAX_VALUE;
+            fDist = Integer.MAX_VALUE;
             sliver = 0;
             floorDrawY = 0;
             texture = null;
@@ -141,16 +141,16 @@ public class SoftRender3D extends View {
     private float focalDistance;
     
     // Fixed point numbers start with 'f_'
-    private int f_cameraX;
-    private int f_cameraY;
-    private int f_cameraZ;
+    private int fCameraX;
+    private int fCameraY;
+    private int fCameraZ;
     private int cameraAngle;
     
     private int[] rayAngleTable;
-    private int[] f_cosTable;
-    private int[] f_sinTable;
-    private int[] f_tanTable;
-    private int[] f_cotTable;
+    private int[] fCosTable;
+    private int[] fSinTable;
+    private int[] fTanTable;
+    private int[] fCotTable;
     
     private Ray[] rays;
     
@@ -163,15 +163,15 @@ public class SoftRender3D extends View {
     public SoftRender3D(HashMap<String, SoftTexture> textureCache, float width, float height) {
         this.fov = 60;
 
-        f_cosTable = new int[NUM_DEGREES];
-        f_sinTable = new int[NUM_DEGREES];
-        f_tanTable = new int[NUM_DEGREES];
-        f_cotTable = new int[NUM_DEGREES];
+        fCosTable = new int[NUM_DEGREES];
+        fSinTable = new int[NUM_DEGREES];
+        fTanTable = new int[NUM_DEGREES];
+        fCotTable = new int[NUM_DEGREES];
         for (int i = 0; i < NUM_DEGREES; i++) {
-            f_cosTable[i] = toFixedPoint(Math.cos(angleToRadians(i)));
-            f_sinTable[i] = toFixedPoint(Math.sin(angleToRadians(i)));
-            f_tanTable[i] = toFixedPoint(Math.tan(angleToRadians(i)));
-            f_cotTable[i] = toFixedPoint(1 / Math.tan(angleToRadians(i)));
+            fCosTable[i] = toFixedPoint(Math.cos(angleToRadians(i)));
+            fSinTable[i] = toFixedPoint(Math.sin(angleToRadians(i)));
+            fTanTable[i] = toFixedPoint(Math.tan(angleToRadians(i)));
+            fCotTable[i] = toFixedPoint(1 / Math.tan(angleToRadians(i)));
         }
         
         setSize(width, height);
@@ -281,9 +281,9 @@ public class SoftRender3D extends View {
     }
     
     public void setCamera(float x, float y, float z, float directionInDegrees) {
-        f_cameraX = toFixedPoint(x);
-        f_cameraY = toFixedPoint(y);
-        f_cameraZ = toFixedPoint(z);
+        fCameraX = toFixedPoint(x);
+        fCameraY = toFixedPoint(y);
+        fCameraZ = toFixedPoint(z);
         cameraAngle = degreesToAngle(directionInDegrees);
     }
     
@@ -320,17 +320,17 @@ public class SoftRender3D extends View {
     }
     
     private void drawWalls() {
-        int f_focalDistance = toFixedPoint(focalDistance);
+        int fFocalDistance = toFixedPoint(focalDistance);
         int viewWidth = dstBuffer.getWidth();
         int viewHeight = dstBuffer.getHeight();
         for (int x = 0; x < viewWidth; x++) {
             Ray ray = rays[x];
-            if (ray.f_dist >= 0 && ray.f_dist < Integer.MAX_VALUE) {
-                int wallHeight = toIntCeil(div(f_focalDistance, ray.f_dist));
+            if (ray.fDist >= 0 && ray.fDist < Integer.MAX_VALUE) {
+                int wallHeight = toIntCeil(div(fFocalDistance, ray.fDist));
                 wallHeight = (wallHeight + 1) & ~1; // Make it even, rounding up
                 if (wallHeight > 0) {
-                    int depth = toIntFloor(ray.f_dist * DEPTH_SCALE);
-                    int bottom = viewHeight / 2 + toIntFloor(wallHeight * f_cameraZ) - 1;
+                    int depth = toIntFloor(ray.fDist * DEPTH_SCALE);
+                    int bottom = viewHeight / 2 + toIntFloor(wallHeight * fCameraZ) - 1;
                     int top = bottom - wallHeight + 1;
                     ray.floorDrawY = bottom;
                     
@@ -362,16 +362,16 @@ public class SoftRender3D extends View {
         //
 
 
-        int f_focalDistance = toFixedPoint(focalDistance);
-        long f_cosCameraAngle = f_cosTable[cameraAngle];
-        long f_sinCameraAngle = f_sinTable[cameraAngle];
+        int fFocalDistance = toFixedPoint(focalDistance);
+        long fCosCameraAngle = fCosTable[cameraAngle];
+        long fSinCameraAngle = fSinTable[cameraAngle];
         
-        int tx1 = mul(f_focalDistance, f_cameraZ);
-        int ty1 = (viewWidth/2 - 1) * f_cameraZ;
-        long txStart = tx1 * f_cosCameraAngle + ty1 * f_sinCameraAngle;
-        long tyStart = -tx1 * f_sinCameraAngle + ty1 * f_cosCameraAngle;
-        long tIncStartSin = -f_cameraZ * f_sinCameraAngle;
-        long tIncStartCos = -f_cameraZ * f_cosCameraAngle;
+        int tx1 = mul(fFocalDistance, fCameraZ);
+        int ty1 = (viewWidth/2 - 1) * fCameraZ;
+        long txStart = tx1 * fCosCameraAngle + ty1 * fSinCameraAngle;
+        long tyStart = -tx1 * fSinCameraAngle + ty1 * fCosCameraAngle;
+        long tIncStartSin = -fCameraZ * fSinCameraAngle;
+        long tIncStartCos = -fCameraZ * fCosCameraAngle;
      
         int firstY = viewHeight/2 + 1;
         int startDestOffset = firstY * viewWidth + (viewWidth - 1);
@@ -388,8 +388,8 @@ public class SoftRender3D extends View {
         for (int currentY = firstY; currentY < viewHeight; currentY++) {
             int row = currentY - viewHeight / 2;
                         
-            int tx = (int)((txStart / row) >> FRACTION_BITS) + f_cameraX;
-            int ty = (int)((tyStart / row) >> FRACTION_BITS) + f_cameraY;
+            int tx = (int)((txStart / row) >> FRACTION_BITS) + fCameraX;
+            int ty = (int)((tyStart / row) >> FRACTION_BITS) + fCameraY;
             
             long txInc1 = tIncStartSin / row;
             long tyInc1 = tIncStartCos / row;
@@ -406,8 +406,8 @@ public class SoftRender3D extends View {
             tx += startX * txInc;
             ty += startX * tyInc;
             
-            int f_dist = (int)(((long)f_cameraZ * f_focalDistance / row) >> FRACTION_BITS);
-            int depth = toIntFloor(f_dist * DEPTH_SCALE);
+            int fDist = (int)(((long)fCameraZ * fFocalDistance / row) >> FRACTION_BITS);
+            int depth = toIntFloor(fDist * DEPTH_SCALE);
             
             for (int x = startX; x < endX; x++) {
                 if (currentY > rays[x].floorDrawY) {
@@ -454,9 +454,9 @@ public class SoftRender3D extends View {
         if (visibleEntities.isEmpty() == false) {
             int viewWidth = dstBuffer.getWidth();
             int viewHeight = dstBuffer.getHeight();
-            float cameraX = toFloat(f_cameraX);
-            float cameraY = toFloat(f_cameraY);
-            float cameraZ = toFloat(f_cameraZ);
+            float cameraX = toFloat(fCameraX);
+            float cameraY = toFloat(fCameraY);
+            float cameraZ = toFloat(fCameraZ);
             float cosAngle = (float)Math.cos(angleToRadians(cameraAngle));
             float sinAngle = (float)Math.sin(angleToRadians(cameraAngle));
             for (Entity entity : visibleEntities) {
@@ -484,13 +484,13 @@ public class SoftRender3D extends View {
                     }
 
                     int depth = (int)(dist * DEPTH_SCALE);
-                    int f_dist = toFixedPoint(dist);
-                    int f_renderWidth = toFixedPoint(renderWidth);
+                    int fDist = toFixedPoint(dist);
+                    int fRenderWidth = toFixedPoint(renderWidth);
                     int renderX2 = Math.min(viewWidth, renderX + renderWidth);
                     for (int x = Math.max(renderX, 0); x < renderX2; x++) {
                         Ray ray = rays[viewWidth - x - 1];
-                        if (f_dist < ray.f_dist) {
-                            int sliver = div(toFixedPoint(x - renderX), f_renderWidth);
+                        if (fDist < ray.fDist) {
+                            int sliver = div(toFixedPoint(x - renderX), fRenderWidth);
                             drawTextureSliver(texture, false, sliver, depth, x, renderY, renderHeight);
                         }
                     }
@@ -515,13 +515,13 @@ public class SoftRender3D extends View {
         int srcSizeBits = srcTexture.getSizeBits();
         
         int srcX = toIntFloor(srcViewWidth * sliver);
-        int f_y = 0;
-        int f_dy = div(toFixedPoint(srcViewHeight), toFixedPoint(dstHeight));
+        int fY = 0;
+        int fDy = div(toFixedPoint(srcViewHeight), toFixedPoint(dstHeight));
         int renderX = dstX;
         int renderY = dstY;
         int renderHeight = dstHeight;
         if (renderY < 0) {
-            f_y = mulDiv(toFixedPoint(-renderY), toFixedPoint(srcViewHeight), toFixedPoint(dstHeight));
+            fY = mulDiv(toFixedPoint(-renderY), toFixedPoint(srcViewHeight), toFixedPoint(dstHeight));
             renderHeight += renderY;
             renderY = 0;
         }
@@ -535,17 +535,17 @@ public class SoftRender3D extends View {
             
             if (srcOpaque && depth <= 256) {
                 for (int y = renderY; y < renderY2; y++) {
-                    dstData[renderOffset] = srcData[srcX + (toIntFloor(f_y) << srcSizeBits)];
+                    dstData[renderOffset] = srcData[srcX + (toIntFloor(fY) << srcSizeBits)];
                     renderOffset += dstViewWidth;
-                    f_y += f_dy;
+                    fY += fDy;
                 }
             } else {
                 for (int y = renderY; y < renderY2; y++) {
-                    int srcColor = srcData[srcX + (toIntFloor(f_y) << srcSizeBits)];
+                    int srcColor = srcData[srcX + (toIntFloor(fY) << srcSizeBits)];
                     
                     drawPixel(dstData, renderOffset, srcColor, depth);
                     renderOffset += dstViewWidth;
-                    f_y += f_dy;
+                    fY += fDy;
                 }
             }
         }
@@ -580,8 +580,8 @@ public class SoftRender3D extends View {
     }
     
     private List<Entity> getVisibileEntities() {
-        float cameraX = toFloat(f_cameraX);
-        float cameraY = toFloat(f_cameraY);
+        float cameraX = toFloat(fCameraX);
+        float cameraY = toFloat(fCameraY);
         float cosAngle = (float)Math.cos(angleToRadians(cameraAngle));
         float sinAngle = (float)Math.sin(angleToRadians(cameraAngle));
         // Get visible objects
@@ -613,7 +613,7 @@ public class SoftRender3D extends View {
     */
     private List<Entity> raycast() {
         visibleFloors.clear();
-        addVisibleFloor(toIntFloor(f_cameraX), toIntFloor(f_cameraY));
+        addVisibleFloor(toIntFloor(fCameraX), toIntFloor(fCameraY));
         int viewWidth = dstBuffer.getWidth();
         for (int x = 0; x < viewWidth; x++) {
             Ray ray = rays[x];
@@ -622,24 +622,24 @@ public class SoftRender3D extends View {
 
             // Check for x intersections
             if (angle > ANGLE_0 && angle < ANGLE_180) {
-                int f_rayY = floor(f_cameraY);
-                int f_rayX = f_cameraX + mul(f_cameraY - f_rayY, f_cotTable[angle]);
-                raycast(ray, -1, f_rayX, f_rayY, f_cotTable[angle], -ONE, false);
+                int fRayY = floor(fCameraY);
+                int fRayX = fCameraX + mul(fCameraY - fRayY, fCotTable[angle]);
+                raycast(ray, -1, fRayX, fRayY, fCotTable[angle], -ONE, false);
             } else if (angle > ANGLE_180 && angle < ANGLE_360) {
-                int f_rayY = ONE + floor(f_cameraY);
-                int f_rayX = f_cameraX + mul(f_cameraY - f_rayY, f_cotTable[angle]);
-                raycast(ray, 1, f_rayX, f_rayY, -f_cotTable[angle], ONE, false);
+                int fRayY = ONE + floor(fCameraY);
+                int fRayX = fCameraX + mul(fCameraY - fRayY, fCotTable[angle]);
+                raycast(ray, 1, fRayX, fRayY, -fCotTable[angle], ONE, false);
             }
 
             // Check for y intersections
             if (angle > ANGLE_90 && angle < ANGLE_270) {
-                int f_rayX = floor(f_cameraX);
-                int f_rayY = f_cameraY + mul(f_cameraX - f_rayX, f_tanTable[angle]);
-                raycast(ray, -1, f_rayX, f_rayY, -ONE, f_tanTable[angle], true);
+                int fRayX = floor(fCameraX);
+                int fRayY = fCameraY + mul(fCameraX - fRayX, fTanTable[angle]);
+                raycast(ray, -1, fRayX, fRayY, -ONE, fTanTable[angle], true);
             } else if (angle < ANGLE_90 || angle > ANGLE_270) {
-                int f_rayX = ONE + floor(f_cameraX);
-                int f_rayY = f_cameraY + mul(f_cameraX - f_rayX, f_tanTable[angle]);
-                raycast(ray, 1, f_rayX, f_rayY, ONE, -f_tanTable[angle], true);
+                int fRayX = ONE + floor(fCameraX);
+                int fRayY = fCameraY + mul(fCameraX - fRayX, fTanTable[angle]);
+                raycast(ray, 1, fRayX, fRayY, ONE, -fTanTable[angle], true);
             }
         }
         
@@ -649,7 +649,7 @@ public class SoftRender3D extends View {
     /**
     Cast a ray looking for an x- or y-intersection.
     */
-    private void raycast(Ray ray, int dir, int f_rayX, int f_rayY, int f_rayDX, int f_rayDY, boolean checkingY) {
+    private void raycast(Ray ray, int dir, int fRayX, int fRayY, int fRayDX, int fRayDY, boolean checkingY) {
         
         final int windowMask = checkingY ? WINDOW_NORTH_SOUTH : WINDOW_WEST_EAST;
         int tileX;
@@ -660,17 +660,17 @@ public class SoftRender3D extends View {
                 
         if (checkingY) {
             if (dir == -1) {
-                tileX = toIntFloor(f_rayX) - 1;
+                tileX = toIntFloor(fRayX) - 1;
             } else {
-                tileX = toIntFloor(f_rayX);
+                tileX = toIntFloor(fRayX);
             }
-            tileY = toIntFloor(f_rayY);
+            tileY = toIntFloor(fRayY);
         } else {
-            tileX = toIntFloor(f_rayX);
+            tileX = toIntFloor(fRayX);
             if (dir == -1) {
-                tileY = toIntFloor(f_rayY) - 1;
+                tileY = toIntFloor(fRayY) - 1;
             } else {
-                tileY = toIntFloor(f_rayY);
+                tileY = toIntFloor(fRayY);
             }
         }
         
@@ -685,9 +685,9 @@ public class SoftRender3D extends View {
             } else if (tile.getType() == Tile.getTypeWall() || tile.getType() == Tile.getTypeExit() || tile.getType() == Tile.getTypeGenerator()) {
 
                 if (checkingY) {
-                    sliver = fracPart(f_rayY);
+                    sliver = fracPart(fRayY);
                 } else {
-                    sliver = fracPart(f_rayX);
+                    sliver = fracPart(fRayX);
                 }
                 
                 texture = tile.getTexture();
@@ -707,61 +707,61 @@ public class SoftRender3D extends View {
                 found = true;
                 break;
             } else if (tile.getType() == Tile.getTypeDoor()) {
-                int f_extraX = f_rayDX/2;
-                int f_extraY = f_rayDY/2;
+                int fExtraX = fRayDX/2;
+                int fExtraY = fRayDY/2;
                 int s = tile.getRenderState();
                 if (checkingY) {
-                    sliver = fracPart(f_rayY + f_extraY);
+                    sliver = fracPart(fRayY + fExtraY);
                 } else {
-                    sliver = fracPart(f_rayX + f_extraX);
+                    sliver = fracPart(fRayX + fExtraX);
                 }
 
                 if (s <= sliver) {
                     sliver -= s;
-                    f_rayX += f_extraX;
-                    f_rayY += f_extraY;
+                    fRayX += fExtraX;
+                    fRayY += fExtraY;
                     texture = doorTextures[tile.getSubtype()];
                     found = true;
                     break;
                 }
             } else if (tile.getType() == Tile.getTypeWindow() && (tile.getSubtype() & windowMask) != 0) {
-                int f_extraX = f_rayDX/2;
-                int f_extraY = f_rayDY/2;
+                int fExtraX = fRayDX/2;
+                int fExtraY = fRayDY/2;
                 if (checkingY) {
-                    sliver = fracPart(f_rayY + f_extraY);
+                    sliver = fracPart(fRayY + fExtraY);
                 } else {
-                    sliver = fracPart(f_rayX + f_extraX);
+                    sliver = fracPart(fRayX + fExtraX);
                 }
 
                 int d = ONE >> 3;
                 if ((((sliver  + d/2) / d) & 1) == 0) {
-                    f_rayX += f_extraX;
-                    f_rayY += f_extraY;
+                    fRayX += fExtraX;
+                    fRayY += fExtraY;
                     found = true;
                     texture = windowTexture;
                     break;
                 }
             } else if (tile.getType() == Tile.getTypeMovableWall()) {
-                int f_extraX = mul(tile.getRenderState(), f_rayDX);
-                int f_extraY = mul(tile.getRenderState(), f_rayDY);
+                int fExtraX = mul(tile.getRenderState(), fRayDX);
+                int fExtraY = mul(tile.getRenderState(), fRayDY);
                 
                 boolean visible;
                 if (checkingY) {
-                    visible = toIntFloor(f_rayY + f_extraY) == tileY;
+                    visible = toIntFloor(fRayY + fExtraY) == tileY;
                 } else {
-                    visible = toIntFloor(f_rayX + f_extraX) == tileX;
+                    visible = toIntFloor(fRayX + fExtraX) == tileX;
                 }
 
                 if (visible) {
                     
                     if (checkingY) {
-                        sliver = fracPart(f_rayY + f_extraY);
+                        sliver = fracPart(fRayY + fExtraY);
                     } else {
-                        sliver = fracPart(f_rayX + f_extraX);
+                        sliver = fracPart(fRayX + fExtraX);
                     }
 
-                    f_rayX += f_extraX;
-                    f_rayY += f_extraY;
+                    fRayX += fExtraX;
+                    fRayY += fExtraY;
                     texture = tile.getTexture();
                     found = true;
                     break;
@@ -770,25 +770,25 @@ public class SoftRender3D extends View {
             
             addVisibleFloor(tileX, tileY);
             
-            f_rayX += f_rayDX;
-            f_rayY += f_rayDY;
+            fRayX += fRayDX;
+            fRayY += fRayDY;
             if (checkingY) {
                 tileX += dir;
-                tileY = toIntFloor(f_rayY);
+                tileY = toIntFloor(fRayY);
             } else {
-                tileX = toIntFloor(f_rayX);
+                tileX = toIntFloor(fRayX);
                 tileY += dir;
             }
         }
         
         if (found) {
-            long f_cosCameraAngle = f_cosTable[cameraAngle];
-            long f_sinCameraAngle = f_sinTable[cameraAngle];
+            long fCosCameraAngle = fCosTable[cameraAngle];
+            long fSinCameraAngle = fSinTable[cameraAngle];
             
-            int f_dist = (int)(((f_rayX - f_cameraX) * f_cosCameraAngle - (f_rayY - f_cameraY) * f_sinCameraAngle) >> FRACTION_BITS);
+            int fDist = (int)(((fRayX - fCameraX) * fCosCameraAngle - (fRayY - fCameraY) * fSinCameraAngle) >> FRACTION_BITS);
                     
-            if (f_dist < ray.f_dist) {
-                ray.f_dist = f_dist;
+            if (fDist < ray.fDist) {
+                ray.fDist = fDist;
                 ray.sliver = sliver;
                 ray.texture = texture;      
             }
