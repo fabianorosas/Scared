@@ -753,7 +753,7 @@ public class GameScene extends Scene {
         }
         
         List<Entity> hitEnemies = map.getCollisions(Enemy.class, player.getX(), player.getY(), p.x, p.y);
-        if (hitEnemies.size() > 0) {
+        if (hitEnemies.isEmpty() == false) {
             for (Entity entity : hitEnemies) {
                 if (entity instanceof Enemy) {
                     ((Enemy)entity).hurt(6 + (int)(Math.random()*3)); //6..8

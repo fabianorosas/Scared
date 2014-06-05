@@ -138,7 +138,7 @@ public class Enemy extends Entity {
             Point2D.Float point = map.getWallCollision(getX(), getY(), (float)Math.toDegrees(angleToPlayer));
             if (point != null) {
                 List<Entity> playerHit = map.getCollisions(Player.class, getX(), getY(), point.x, point.y);
-                if (playerHit.size() > 0) {
+                if (playerHit.isEmpty() == false) {
                     isPlayerVisible = true;
                 }
             }
@@ -264,7 +264,7 @@ public class Enemy extends Entity {
                         Point2D.Float point = map.getWallCollision(getX(), getY(), (float)Math.toDegrees(aimAngle));
                         if (point != null) {
                             List<Entity> playerHit = map.getCollisions(Player.class, getX(), getY(), point.x, point.y);
-                            if (playerHit.size() > 0) {
+                            if (playerHit.isEmpty() == false) {
                                 // here, diffAngle is the differnce between the angle the
                                 // robot aimed at and the angle the player is currently at
                                 double diffAngle = Math.abs(aimAngle - angleToPlayer);

@@ -185,7 +185,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
                 remainingTime = Math.max(0, elapsedTime - ticks / frameRate);
             }
             for (int i = 0; i < ticks; i++) {
-                if (sceneStack.size() == 0) {
+                if (sceneStack.isEmpty()) {
                     pushScene(createFirstScene());
                 }
                 scene = sceneStack.peek();
@@ -295,7 +295,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     public abstract Scene createFirstScene();
     
     public boolean canPopScene() {
-        return sceneStack.size() > 0;
+        return sceneStack.isEmpty() == false;
     }
     
     public void popScene() {
@@ -319,7 +319,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     // Input
     
     private KeyListener getFocusedViewKeyListener() {
-        if (sceneStack.size() == 0) {
+        if (sceneStack.isEmpty()) {
             return null;
         }
         else {
@@ -340,7 +340,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     }
     
     private FocusListener getFocusedViewFocusListener() {
-        if (sceneStack.size() == 0) {
+        if (sceneStack.isEmpty()) {
             return null;
         }
         else {
@@ -364,7 +364,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         View pick = null;
         mouseX = e.getX();
         mouseY = e.getY();
-        if (sceneStack.size() > 0) {
+        if (sceneStack.isEmpty() == false) {
             pick = sceneStack.peek().pick(e.getX(), e.getY());
         }
 

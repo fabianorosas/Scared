@@ -40,7 +40,7 @@ public class Tile {
     }
     
     public boolean hasEntities() {
-        return (entities != null && entities.size() > 0);
+        return (entities != null && !entities.isEmpty());
     }
 
     public SoftTexture getTexture() {
