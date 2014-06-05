@@ -24,15 +24,13 @@ public class BufferedAudio {
             FloatControl control = null;
             try {
                 control = (FloatControl)clip.getControl(type);
-            }
-            catch (Exception ex) { 
+            } catch (Exception ex) { 
                 // Unsupported control type?
             }
             if (control != null) {
                 if (clip.isActive()) {
                     control.shift(control.getValue(), value, 50);
-                }
-                else {
+                } else {
                     control.setValue(value);
                 }
             }
@@ -86,11 +84,9 @@ public class BufferedAudio {
             try {
                 clip = AudioSystem.getClip();
                 clip.open(AudioSystem.getAudioInputStream(url));
-            }
-            catch (UnsupportedAudioFileException ex) {
+            } catch (UnsupportedAudioFileException ex) {
                 throw new IOException(ex);
-            }            
-            catch (LineUnavailableException ex) {
+            } catch (LineUnavailableException ex) {
                 throw new IOException(ex);
             }
             if (clip != null) {
@@ -124,8 +120,7 @@ public class BufferedAudio {
             stream.setPan(pan);
             if (loop) {
                 stream.loop();
-            }
-            else {
+            } else {
                 stream.play();
             }
         }

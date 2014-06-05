@@ -66,12 +66,10 @@ public class View {
         if (cursor == null) {
             if (superview != null) {
                 return superview.getCursor();
-            }
-            else {
+            } else {
                 return Cursor.getDefaultCursor();
             }
-        }
-        else {
+        } else {
             return cursor;
         }
     }
@@ -234,8 +232,7 @@ public class View {
         while (view != null) {
             if (view == this) {
                 return true;
-            }
-            else {
+            } else {
                 view = view.getSuperview();
             }
         }
@@ -314,8 +311,7 @@ public class View {
                 superviewTransformModCount = 0;
                 worldTransformDirty = true;
             }
-        }
-        else {
+        } else {
             superview.updateTransforms();
             if (localTransformDirty || superviewTransformModCount != superview.localTransformModCount) {
                 worldTransform.setTransform(superview.worldTransform);
@@ -349,8 +345,7 @@ public class View {
         try {
             worldTransform.inverseTransform(src, dst);
             return dst;
-        }
-        catch (NoninvertibleTransformException ex) {
+        } catch (NoninvertibleTransformException ex) {
             return null;
         }
     }
@@ -370,8 +365,7 @@ public class View {
     public View pick(float worldX, float worldY, boolean allowDisabledViews) {
         if (!isVisible() || getOpacity() <= 0) {
             return null;
-        }
-        else {
+        } else {
             boolean inside = contains(worldX, worldY);
             if (isClippedToBounds() && !inside) {
                 return null;

@@ -24,8 +24,7 @@ public class ImageView extends View {
     public void sizeToFit() {
         if (image == null) {
             setSize(0, 0);
-        }
-        else {
+        } else {
             setSize(image.getWidth(), image.getHeight());
         }
     }

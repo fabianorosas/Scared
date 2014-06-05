@@ -137,8 +137,7 @@ public class Entity implements Comparable<Entity> {
     public boolean notifyCollision(Entity movingEntity) {
         if (this instanceof Player) {
             movingEntity.notifyPlayerCollision((Player)this);
-        }
-        else if (movingEntity instanceof Player) {
+        } else if (movingEntity instanceof Player) {
             this.notifyPlayerCollision((Player)movingEntity);
         }
         return false;
@@ -154,16 +153,20 @@ public class Entity implements Comparable<Entity> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null){
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()){
 			return false;
+		}
 		Entity other = (Entity) obj;
 		if (Float.floatToIntBits(distanceFromCamera) != Float
-				.floatToIntBits(other.distanceFromCamera))
+				.floatToIntBits(other.distanceFromCamera)){
 			return false;
+		}
 		return true;
 	}
 
@@ -171,8 +174,7 @@ public class Entity implements Comparable<Entity> {
     public int compareTo(Entity t) {
         if (distanceFromCamera < t.distanceFromCamera) {
             return 1;
-        }
-        else if (distanceFromCamera > t.distanceFromCamera) {
+        } else if (distanceFromCamera > t.distanceFromCamera) {
             return -1;
         }
         return 0;

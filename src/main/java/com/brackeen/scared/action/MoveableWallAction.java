@@ -60,8 +60,7 @@ public class MoveableWallAction implements Action {
         if (ticks < TICKS_PER_TILE_MOVE) {
             ticks++;
             tile.setRenderState(Tile.getRenderStateMax() * ticks / TICKS_PER_TILE_MOVE);
-        }
-        else {
+        } else {
             index++;
             SoftTexture texture = tile.getTexture();
             tile.setTexture(floorTexture);

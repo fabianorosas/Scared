@@ -174,8 +174,7 @@ public class GameScene extends Scene {
                 SoftTexture thisTexture = getTexture(fullname, false);
                 if (lastTexture == null) {
                     texture = thisTexture;
-                }
-                else {
+                } else {
                     lastTexture.setHalfSizeTexture(thisTexture);
                 }
                 lastTexture = thisTexture;
@@ -327,24 +326,19 @@ public class GameScene extends Scene {
             public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     App.getApp().pushScene(new ConsoleScene(GameScene.this));
-                }
-                else if (ke.getKeyCode() == KeyEvent.VK_X) {
+                } else if (ke.getKeyCode() == KeyEvent.VK_X) {
                     crosshair.setVisible(!crosshair.isVisible());
-                }
-                else if (ke.getKeyCode() == KeyEvent.VK_TAB || ke.getKeyCode() == KeyEvent.VK_BACK_QUOTE) {
+                } else if (ke.getKeyCode() == KeyEvent.VK_TAB || ke.getKeyCode() == KeyEvent.VK_BACK_QUOTE) {
                     specialStats.setVisible(true);
                     normalStats.setVisible(false);
                     ticksUntilHideSpecialStats = 60;
-                }
-                else if (DEBUG_ALLOW_CAMERA_Z_CHANGES && ke.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+                } else if (DEBUG_ALLOW_CAMERA_Z_CHANGES && ke.getKeyCode() == KeyEvent.VK_PAGE_UP) {
                     Player player = map.getPlayer();
                     player.setZ(Math.min(1-1/8f, player.getZ() + 1/8f));
-                }
-                else if (DEBUG_ALLOW_CAMERA_Z_CHANGES && ke.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+                } else if (DEBUG_ALLOW_CAMERA_Z_CHANGES && ke.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
                     Player player = map.getPlayer();
                     player.setZ(Math.max(1/8f, player.getZ() - 1/8f));
-                }
-                else {
+                } else {
                     keyDown(ke.getKeyCode(), true);
                 }
             }
@@ -379,8 +373,7 @@ public class GameScene extends Scene {
                 int mouseY = me.getY();
                 if (mouseX >=0 && mouseX < getWidth() && mouseY >= 0 && mouseY < getHeight()) {
                     crosshair.setLocation(mouseX, mouseY);
-                }
-                else {
+                } else {
                     crosshair.setLocation(getWidth() / 2, getHeight() / 2);
                 }
             }
@@ -390,8 +383,7 @@ public class GameScene extends Scene {
                 int mouseY = me.getY();
                 if (mouseX >=0 && mouseX < getWidth() && mouseY >= 0 && mouseY < getHeight()) {
                     crosshair.setLocation(mouseX, mouseY);
-                }
-                else {
+                } else {
                     crosshair.setLocation(getWidth() / 2, getHeight() / 2);
                 }
             }
@@ -513,16 +505,13 @@ public class GameScene extends Scene {
                     "freeze   Freeze all enemies in place.\n" +
                     "cheat    Give yourself invincibility.\n" +
                     "debug    Show debug info.";
-        }
-        else if ("QUIT".equalsIgnoreCase(command)) {
+        } else if ("QUIT".equalsIgnoreCase(command)) {
             App.getApp().popScene(); // Back to game
             App.getApp().popScene(); // Back to title
             return "Quitting...";
-        }
-        else if ("4 8 15 16 23 42".equalsIgnoreCase(command)) {
+        } else if ("4 8 15 16 23 42".equalsIgnoreCase(command)) {
             return "Timer reset to 108 minutes.";
-        }
-        else if ("DEBUG".equalsIgnoreCase(command)) {
+        } else if ("DEBUG".equalsIgnoreCase(command)) {
             float dx = (float)Math.cos(Math.toRadians(player.getDirection()));
             float dy = (float)Math.sin(Math.toRadians(player.getDirection()));
             return
@@ -530,20 +519,17 @@ public class GameScene extends Scene {
                     "facing=" + dx + "," + dy + "\n" + 
                     "actions=" + map.getNumActions() + "\n" +
                     "entities=" + map.getNumEntities();
-        }
-        else if ("RESTART".equalsIgnoreCase(command)) {
+        } else if ("RESTART".equalsIgnoreCase(command)) {
             setLevel(level);
             App.getApp().popScene(); // Back to game
             return "Restarting level " + (level + 1) + "...";
-        }
-        else if ("FREEZE".equalsIgnoreCase(command)) {
+        } else if ("FREEZE".equalsIgnoreCase(command)) {
             player.setFreezeEnemies(!player.isFreezeEnemies());
             if (player.isFreezeEnemies()) {
                 playSound("/sound/nuclear_health.wav");
             }
             return "Freeze mode is now " + (player.isFreezeEnemies() ? "on" : "off");
-        }
-        else if ("CHEAT".equalsIgnoreCase(command)) {
+        } else if ("CHEAT".equalsIgnoreCase(command)) {
             player.setGodMode(!player.isGodMode());
             if (player.isGodMode()) {
                 player.setAmmo(Player.MAX_AMMO);
@@ -551,18 +537,15 @@ public class GameScene extends Scene {
                 playSound("/sound/nuclear_health.wav");
             }
             return "Cheat mode is now " + (player.isGodMode() ? "on" : "off");
-        }
-        else if ("AMMO".equalsIgnoreCase(command)) {
+        } else if ("AMMO".equalsIgnoreCase(command)) {
             player.setAmmo(Math.min(Player.MAX_AMMO, player.getAmmo() + 20));
             playSound("/sound/getammo.wav");
             return "You got some ammo";
-        }
-        else if ("HEALTH".equalsIgnoreCase(command)) {
+        } else if ("HEALTH".equalsIgnoreCase(command)) {
             player.setHealth(Math.min(Player.MAX_HEALTH, player.getHealth() + 20));
             playSound("/sound/getammo.wav");
             return "You got a med kit";
-        }
-        else if (command != null && command.length() > 5 && "LEVEL".equalsIgnoreCase(command.substring(0, 5))) {
+        } else if (command != null && command.length() > 5 && "LEVEL".equalsIgnoreCase(command.substring(0, 5))) {
             int newLevel;
             try {
                 newLevel = Integer.parseInt(command.substring(5).trim()) - 1;
@@ -574,12 +557,10 @@ public class GameScene extends Scene {
             if (newLevel >= 0 && newLevel < NUM_LEVELS) {
                 setLevel(newLevel);
                 return "Jump to level " + (newLevel + 1);
-            }
-            else {
+            } else {
                 return "Invalid level";
             }
-        }
-        else if (command != null && command.length() > 3 && "KEY".equalsIgnoreCase(command.substring(0, 3))) {
+        } else if (command != null && command.length() > 3 && "KEY".equalsIgnoreCase(command.substring(0, 3))) {
             int key;
             try {
                 key = Integer.parseInt(command.substring(3).trim());
@@ -592,12 +573,10 @@ public class GameScene extends Scene {
                 playSound("/sound/unlock.wav");
                 player.addKey(key);
                 return "You got key " + key;
-            }
-            else {
+            } else {
                 return "Invalid key";
             }
-        }
-        else {
+        } else {
             return "Unknown command";
         }
     }
@@ -617,8 +596,7 @@ public class GameScene extends Scene {
                 
                 if (nextAction == ACTION_NEW_LEVEL) {
                     newLevelAction();
-                }
-                else if (nextAction == ACTION_WIN) {
+                } else if (nextAction == ACTION_WIN) {
                     winAction();
                 }
                 
@@ -637,8 +615,7 @@ public class GameScene extends Scene {
         if (map.isExitFound() && !hasWon) {
             if (level < NUM_LEVELS - 1) {
                 nextAction = ACTION_NEW_LEVEL;
-            }
-            else {
+            } else {
                 nextAction = ACTION_WIN;
             }
             nextActionTicksRemaining = 90;
@@ -693,8 +670,7 @@ public class GameScene extends Scene {
                 gunBlastView.setVisible(true);
                 x += 3;
                 y += 5;                
-            }
-            else {
+            } else {
                 gunBlastView.setVisible(false);
             }
             
@@ -706,8 +682,7 @@ public class GameScene extends Scene {
 
             gunBlastView.setLocation(x, y);
             gunView.setLocation(x, y);
-        }
-        else {
+        } else {
             gunBlastCountdown = 0;
         }
     }
@@ -759,8 +734,7 @@ public class GameScene extends Scene {
                     ((Enemy)entity).hurt(6 + (int)(Math.random()*3)); //6..8
                 }
             }
-        }
-        else {
+        } else {
             // Miss - show the hit on the wall
             map.addEntity(new BlastMark(blastTextures, p.x, p.y, GUN_BLAST_COUNTDOWN * 3 / 2));
         }
@@ -787,8 +761,7 @@ public class GameScene extends Scene {
                 setLevel(0);
             }
             return;
-        }
-        else if (!player.isAlive()) {
+        } else if (!player.isAlive()) {
             player.setZ(Math.max(player.getZ() - 0.008f, player.getRadius()));
             deathTicksRemaining--;
             if (deathTicksRemaining <= 0) {
@@ -798,13 +771,11 @@ public class GameScene extends Scene {
                     player.setAmmo(Player.DEFAULT_AMMO);
                     setLevel(level);
                 }
-            }
-            else {
+            } else {
                 mousePressed = false;
             }
             return;
-        }
-        else {
+        } else {
             deathTicksRemaining = 60;
         }
 
@@ -878,11 +849,9 @@ public class GameScene extends Scene {
         if (!keyRun && runVelocity != 0) {
             if (Math.abs(runVelocity) <= RUN_DECEL) {
                 runVelocity = 0;
-            }
-            else if (runVelocity < 0) {
+            } else if (runVelocity < 0) {
                 runVelocity += RUN_DECEL;
-            }
-            else {
+            } else {
                 runVelocity -= RUN_DECEL;
             }
         }
@@ -890,11 +859,9 @@ public class GameScene extends Scene {
         if (!keyStrafe && strafeVelocity != 0) {
             if (Math.abs(strafeVelocity) <= STRAFE_DECEL) {
                 strafeVelocity = 0;
-            }
-            else if (strafeVelocity < 0) {
+            } else if (strafeVelocity < 0) {
                 strafeVelocity += STRAFE_DECEL;
-            }
-            else {
+            } else {
                 strafeVelocity -= STRAFE_DECEL;
             }
         }
@@ -902,11 +869,9 @@ public class GameScene extends Scene {
         if (!keyTurn && turnVelocity != 0) {
             if (Math.abs(turnVelocity) <= TURN_DECEL) {
                 turnVelocity = 0;
-            }
-            else if (turnVelocity < 0) {
+            } else if (turnVelocity < 0) {
                 turnVelocity += TURN_DECEL;
-            }
-            else {
+            } else {
                 turnVelocity -= TURN_DECEL;
             }
         }

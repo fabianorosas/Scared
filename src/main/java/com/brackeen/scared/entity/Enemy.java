@@ -109,14 +109,12 @@ public class Enemy extends Entity {
             
             if (health <= 0) {
                 gotoHurtState = true;
-            }
-            else if (state == STATE_FIRE) {
+            } else if (state == STATE_FIRE) {
                 // 50% of interrupting firing
                 if (Math.random() < .5) {
                     gotoHurtState = true;
                 }
-            }
-            else if (state != STATE_HURT) {
+            } else if (state != STATE_HURT) {
                 gotoHurtState = true;
             }
             
@@ -163,15 +161,12 @@ public class Enemy extends Entity {
 
             if (pq < 0.25f) {
                 setState(STATE_MOVE_FAR_LEFT);
-            }
-            else if (pq < 0.50f) {
+            } else if (pq < 0.50f) {
                 setState(STATE_MOVE_FAR_RIGHT);
-            }
-            else {
+            } else {
                 setState(STATE_READY);
             }
-        }
-        else if (state > STATE_ASLEEP && state < STATE_READY && Math.random() < p) {
+        } else if (state > STATE_ASLEEP && state < STATE_READY && Math.random() < p) {
             // When moving, randomly change to another move state
             int s = (int)Math.round(Math.random() * 6);
             switch (s) {
@@ -193,8 +188,7 @@ public class Enemy extends Entity {
                 case 5:
                     if (isPlayerVisible(angleToPlayer)) {
                         setState(STATE_READY);
-                    }
-                    else {
+                    } else {
                         setState(STATE_TERMINATE);
                     }
                     break;
@@ -244,8 +238,7 @@ public class Enemy extends Entity {
                     if (player.isAlive() && isPlayerVisible(angleToPlayer)) {
                         aimAngle = angleToPlayer;
                         setState(STATE_FIRE);
-                    }
-                    else {
+                    } else {
                         setState(STATE_TERMINATE);
                     }
                 }
@@ -254,8 +247,7 @@ public class Enemy extends Entity {
             case STATE_FIRE:
                 if (player.isFreezeEnemies()) {
                     setState(STATE_TERMINATE);
-                }
-                else if (ticksRemaining <= 0) {
+                } else if (ticksRemaining <= 0) {
                     App.getApp().getAudio("/sound/laser0.wav", 1).play();
 
                     // fire shot
@@ -271,8 +263,7 @@ public class Enemy extends Entity {
                                 int hitPoints = 0;
                                 if (diffAngle < .04) { // about 2.3 degrees
                                     hitPoints = 15 + (int)Math.round(Math.random() * 7);
-                                }
-                                else if (diffAngle < .25) { // about 15 degrees
+                                } else if (diffAngle < .25) { // about 15 degrees
                                     hitPoints = 3 + (int)Math.round(Math.random() * 5);
                                 }
                                 
@@ -292,11 +283,9 @@ public class Enemy extends Entity {
                     if (health <= 0) {
                         App.getApp().getAudio("/sound/enemy_dead.wav", 1).play();
                         setState(STATE_DYING);
-                    }
-                    else if (Math.random() < .666) {
+                    } else if (Math.random() < .666) {
                         setState(STATE_TERMINATE);
-                    }
-                    else {
+                    } else {
                         setState(STATE_ASLEEP);
                         // immediate fire
                         aimAngle = angleToPlayer;
@@ -320,11 +309,9 @@ public class Enemy extends Entity {
 
             if (!isCollision(newX, newY)) {
                 setLocation(newX, newY);
-            }
-            else if (!isCollision(newX, getY())) {
+            } else if (!isCollision(newX, getY())) {
                 setX(newX);
-            }
-            else if (!isCollision(getX(), newY)) {
+            } else if (!isCollision(getX(), newY)) {
                 setY(newY);
             }
         }

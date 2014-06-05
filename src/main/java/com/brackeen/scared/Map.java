@@ -396,8 +396,7 @@ public class Map {
                 DoorAction doorAction = (DoorAction)action;
                 
                 if (doorAction.getTileX() == tileX && 
-                    doorAction.getTileY() == tileY) 
-                {
+                    doorAction.getTileY() == tileY) {
                     return;
                 }
             }

@@ -24,8 +24,7 @@ public class MedKit extends Entity {
             App.getApp().getAudio("/sound/getammo.wav", 1).play();
             player.setHealth(Math.min(health + 20, Player.MAX_HEALTH));
             delete();
-        }
-        else if (nuclear && player.getHealth() < Player.MAX_NUCLEAR_HEALTH) {
+        } else if (nuclear && player.getHealth() < Player.MAX_NUCLEAR_HEALTH) {
             map.setMessage("N*U*C*L*E*A*R");
             App.getApp().getAudio("/sound/nuclear_health.wav", 1).play();
             player.setHealth(Player.MAX_NUCLEAR_HEALTH);

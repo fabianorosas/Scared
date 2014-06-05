@@ -38,8 +38,7 @@ public class Label extends View {
     public void sizeToFit() {
         if (font == null) {
             setSize(0, 0);
-        }
-        else {
+        } else {
             setSize(font.getStringWidth(text), font.getHeight());
         }
     }

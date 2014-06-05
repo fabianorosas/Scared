@@ -99,8 +99,7 @@ public class Player extends Entity {
                 health = 0;
                 isAlive = false;
                 App.getApp().getAudio("/sound/player_dead.wav", 1).play();
-            }
-            else if (points > 15) {
+            } else if (points > 15) {
                 App.getApp().getAudio("/sound/player_hurt.wav", 1).play();
             }
         }

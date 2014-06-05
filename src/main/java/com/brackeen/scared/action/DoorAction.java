@@ -89,8 +89,7 @@ public class DoorAction implements Action {
             case CLOSING:
                 if (!shouldClose()) {
                     setState(OPENING);
-                }
-                else {
+                } else {
                     if (tile.getRenderState() == Tile.getRenderStateMax()) {
                         SoundPlayer3D.play("/sound/doorwoosh.wav", map.getPlayer(), x, y);
                     }
@@ -119,8 +118,7 @@ public class DoorAction implements Action {
         float dy = Math.abs(p.getY() - (y + 0.5f));
         if (dx < 1.5f && dy < 1.5f) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }

@@ -33,8 +33,7 @@ public class BitmapFont {
     public int getStringWidth(String s) {
         if (s == null) {
             return 0;
-        }
-        else {
+        } else {
             return s.length() * charWidth + (s.length() - 1) * tracking;
         }
     }

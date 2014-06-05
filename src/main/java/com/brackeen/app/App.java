@@ -64,7 +64,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         }
     }
 
-    private final float frameRate = 60;
+    private final static float frameRate = 60;
     private final Timer timer = new Timer((int)(1000 / frameRate), new ActionListener() {
 
         // Using Swing's Timer because it executes on the EDT, so there will be no threading issues.
@@ -152,14 +152,12 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
             try {
                 canvas.createBufferStrategy(2);
                 bufferStrategy = canvas.getBufferStrategy();
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // Do nothing
             }
             if (bufferStrategy == null) {
                 canvas = null;
-            }
-            else {
+            } else {
                 canvas.addMouseListener(this);
                 canvas.addMouseMotionListener(this);
                 canvas.addKeyListener(this);
@@ -180,8 +178,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
             if (ticks > 4) {
                 ticks = 4;
                 remainingTime = 0;
-            }
-            else {
+            } else {
                 remainingTime = Math.max(0, elapsedTime - ticks / frameRate);
             }
             for (int i = 0; i < ticks; i++) {
@@ -213,8 +210,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
             if (scene == null) {
                 g.setColor(Color.BLACK);
                 g.fillRect(0, 0, getWidth(), getHeight());
-            }
-            else {
+            } else {
                 scene.draw(g);
             }
             g.dispose();
@@ -240,8 +236,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
                         loadedAudio.put(audioName, audio);
                     }
                 }
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 // Do nothing
             }
         }
@@ -278,8 +273,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
                         imageCache.put(imageName, new WeakReference<BufferedImage>(image));
                     }
                 }
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 // Do nothing
             }
         }
@@ -321,19 +315,16 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     private KeyListener getFocusedViewKeyListener() {
         if (sceneStack.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             Scene scene = sceneStack.peek();
             View focusedView = scene.getFocusedView();
             if (focusedView == null) {
                 // No focusedView
                 return null;
-            }
-            else if (focusedView.getRoot() != scene) {
+            } else if (focusedView.getRoot() != scene) {
                 // The focusedView not in current scene graph
                 return null;
-            }
-            else {
+            } else {
                 return focusedView.getKeyListener();
             }
         }
@@ -342,19 +333,16 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     private FocusListener getFocusedViewFocusListener() {
         if (sceneStack.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             Scene scene = sceneStack.peek();
             View focusedView = scene.getFocusedView();
             if (focusedView == null) {
                 // No focusedView
                 return null;
-            }
-            else if (focusedView.getRoot() != scene) {
+            } else if (focusedView.getRoot() != scene) {
                 // The focusedView not in current scene graph
                 return null;
-            }
-            else {
+            } else {
                 return focusedView.getFocusListener();
             }
         }

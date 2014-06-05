@@ -29,8 +29,7 @@ public class Tile {
     public boolean isSolid() {
         if (getType() == getTypeDoor()) {
             return getRenderState() < getRenderStateMax() * 3 / 4;
-        }
-        else {
+        } else {
             return (getType() != getTypeNothing());
         }
     }
