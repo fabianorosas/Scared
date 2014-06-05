@@ -45,7 +45,7 @@ public class DoorAction implements Action {
     
     private void setState(int state) {
         this.state = state;
-        tile.state = state;
+        tile.setState(state);
         startRenderState = tile.getRenderState();
         ticks = 0;
     }
@@ -81,10 +81,8 @@ public class DoorAction implements Action {
                 break;
 
             case OPEN:
-                if (ticks >= TICKS_WAIT_BEFORE_CLOSING) {
-                    if (shouldClose()) {
-                        setState(CLOSING);
-                    }
+                if (ticks >= TICKS_WAIT_BEFORE_CLOSING && shouldClose()) {
+                	setState(CLOSING);
                 }
                 break;
 

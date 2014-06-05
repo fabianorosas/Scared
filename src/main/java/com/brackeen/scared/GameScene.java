@@ -809,11 +809,9 @@ public class GameScene extends Scene {
         }
 
         // Handle firing
-        if (keyFire || mousePressed) {
-            if (ticksUntilRefire <= 0) {
-                fire();
-                ticksUntilRefire = FIRE_COUNTDOWN;
-            }
+        if ((keyFire || mousePressed) && ticksUntilRefire <= 0) {
+        	fire();
+        	ticksUntilRefire = FIRE_COUNTDOWN;
         }
         if (ticksUntilRefire > 0) {
             ticksUntilRefire--;

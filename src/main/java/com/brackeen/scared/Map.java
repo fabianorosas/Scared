@@ -383,10 +383,8 @@ public class Map {
         
     private boolean isUnlockedDoor(int tileX, int tileY) {
         Tile tile = getTileAt(tileX, tileY);
-        if (tile != null) {
-            if (tile.getType() == Tile.getTypeDoor() && player.hasKey(tile.getSubtype())) {
-                return true;
-            }
+        if (tile != null && tile.getType() == Tile.getTypeDoor() && player.hasKey(tile.getSubtype())) {
+        	return true;
         }
         return false;
     }
@@ -440,18 +438,16 @@ public class Map {
                 setMessage("The power is now on");
             }
         }
-        else if (tile.getType() == Tile.getTypeDoor()) {
-            if (tile != lastCollidedWall) {
-                lastCollidedWall = tile;
-                if (!electricityOn) {
-                    setMessage("The power is off");
-                    App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
-                }
-                else if (!player.hasKey(tile.getSubtype())) {
-                    setMessage("The door is locked");
-                    App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
-                }
-            }
+        else if (tile.getType() == Tile.getTypeDoor() && tile != lastCollidedWall) {
+        	lastCollidedWall = tile;
+        	if (!electricityOn) {
+        		setMessage("The power is off");
+        		App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
+        	}
+        	else if (!player.hasKey(tile.getSubtype())) {
+        		setMessage("The door is locked");
+        		App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
+        	}
         }
     }
     
