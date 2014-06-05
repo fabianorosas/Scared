@@ -448,7 +448,7 @@ public class GameScene extends Scene {
             map = new Map(textureCache, messageQueue, "/maps/level" + level + ".txt", oldPlayer);
         }
         catch (IOException ex) {
-            ex.printStackTrace();
+            System.err.println(ex);
             App.getApp().popScene();
             return;
         }
