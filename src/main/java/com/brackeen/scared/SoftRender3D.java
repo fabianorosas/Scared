@@ -575,11 +575,6 @@ public class SoftRender3D extends View {
             }
             int oneMinusSrcA = 0xff - srcA;
 
-            // For pre-multiplied color
-//          dstR = srcR + ((dstR * oneMinusSrcA) >> 8);
-//          dstG = srcG + ((dstG * oneMinusSrcA) >> 8);
-//          dstB = srcB + ((dstB * oneMinusSrcA) >> 8);
-
             dstR = (srcA * srcR + dstR * oneMinusSrcA) >> 8;
             dstG = (srcA * srcG + dstG * oneMinusSrcA) >> 8;
             dstB = (srcA * srcB + dstB * oneMinusSrcA) >> 8;

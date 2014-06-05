@@ -184,7 +184,6 @@ public class GameScene extends Scene {
         }
                 
         renderer = new SoftRender3D(textureCache, getWidth(), getHeight());
-        //renderer.setPixelScale(4);
         addSubview(renderer);
         
         // Crosshair
