@@ -312,8 +312,7 @@ public class GameScene extends Scene {
                 Cursor noCursor = toolkit.createCustomCursor(cursorImage, new Point(0,0), "none");
                 setCursor(noCursor);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // Ignore it
         }
         
@@ -437,8 +436,7 @@ public class GameScene extends Scene {
         
         try {
             map = new Map(textureCache, messageQueue, "/maps/level" + level + ".txt", oldPlayer);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.err.println(ex);
             App.getApp().popScene();
             return;
@@ -549,8 +547,7 @@ public class GameScene extends Scene {
             int newLevel;
             try {
                 newLevel = Integer.parseInt(command.substring(5).trim()) - 1;
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 newLevel = -1;
             }
 
@@ -564,8 +561,7 @@ public class GameScene extends Scene {
             int key;
             try {
                 key = Integer.parseInt(command.substring(3).trim());
-            }
-            catch (NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 key = -1;
             }
 

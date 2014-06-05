@@ -89,13 +89,11 @@ public class ConsoleScene extends Scene {
             public void keyPressed(KeyEvent ke) {
                 if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     App.getApp().popScene();
-                }
-                else if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                } else if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     if (currentLine.length() > 0) {
                         currentLine = currentLine.substring(0, currentLine.length() - 1);
                     }
-                }
-                else if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+                } else if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
                     App.log(PROMPT + currentLine);
                     String response = gameScene.doCommand(currentLine);
                     App.log(response);
@@ -128,11 +126,9 @@ public class ConsoleScene extends Scene {
             Label label = (Label)labels.get(i);
             if (i < numLogLines) {
                 label.setText(log.get(log.size() - numLogLines + i));
-            }
-            else if (i == numLogLines) {
+            } else if (i == numLogLines) {
                 label.setText(PROMPT + currentLine + (cursorOn ? "_" : ""));
-            }
-            else {
+            } else {
                 label.setText("");
             }
         }

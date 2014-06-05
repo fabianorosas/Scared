@@ -204,23 +204,19 @@ public class Map {
 
                     if (tile.getType() == Tile.getTypeGenerator()) {
                         tile.setTexture(textureCache.get("generator00.png"));
-                    }
-                    else if (tile.getType() == Tile.getTypeExit()) {
+                    } else if (tile.getType() == Tile.getTypeExit()) {
                         tile.setTexture(textureCache.get("exit00.png"));
-                    }
-                    else {
+                    } else {
                         int textureIndex = Integer.parseInt(line.substring(x, x + 1), 16);
                         if (textureIndex < 10) {
                             tile.setTexture(textureCache.get("wall0" + textureIndex + ".png"));
-                        }
-                        else {
+                        } else {
                             tile.setTexture(textureCache.get("wall" + textureIndex + ".png"));
                         }
                     }
                 }
             }
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             throw new IOException(ex);
         }
     }
@@ -272,8 +268,7 @@ public class Map {
                 oldTile.removeEntity(entity);
             }
             return true;
-        }
-        else {
+        } else {
             Tile newTile = getTileAt(entity);
             if (oldTile != newTile) {
                 if (oldTile != null) {
@@ -356,8 +351,7 @@ public class Map {
         
         if (tile == null) {
             return true;
-        }
-        else {
+        } else {
             return tile.isSolid();
         }
     }
@@ -419,16 +413,14 @@ public class Map {
                     player.setSecrets(player.getSecrets() + 1);
                 }
             }
-        }
-        else if (tile.getType() == Tile.getTypeExit()) { 
+        } else if (tile.getType() == Tile.getTypeExit()) { 
             if (tile.getState() == 0) {
                 tile.setState(1);
                 tile.setTexture(exitButtonOnTexture);
                 App.getApp().getAudio("/sound/endlevel.wav", 1).play();
                 exitFound = true;
             }
-        }
-        else if (tile.getType() == Tile.getTypeGenerator()) { 
+        } else if (tile.getType() == Tile.getTypeGenerator()) { 
             if (tile.getState() == 0) {
                 tile.setState(1);
                 tile.setTexture(generatorOnTexture);
@@ -436,14 +428,12 @@ public class Map {
                 electricityOn = true;
                 setMessage("The power is now on");
             }
-        }
-        else if (tile.getType() == Tile.getTypeDoor() && tile != lastCollidedWall) {
+        } else if (tile.getType() == Tile.getTypeDoor() && tile != lastCollidedWall) {
         	lastCollidedWall = tile;
         	if (!electricityOn) {
         		setMessage("The power is off");
         		App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
-        	}
-        	else if (!player.hasKey(tile.getSubtype())) {
+        	} else if (!player.hasKey(tile.getSubtype())) {
         		setMessage("The door is locked");
         		App.getApp().getAudio("/sound/no_ammo.wav", 1).play();
         	}
@@ -461,8 +451,7 @@ public class Map {
         List<? extends Entity> entitiesToSearch;
         if (entityClass == Player.class) {
             entitiesToSearch = Collections.singletonList(player);
-        }
-        else {
+        } else {
             entitiesToSearch = entities;
         }
         
@@ -516,11 +505,9 @@ public class Map {
         
         if (p1 == null) {
             return p2;
-        }
-        else if (p2 == null) {
+        } else if (p2 == null) {
             return p1;
-        }
-        else {
+        } else {
             // Nearest collision
             float dx1 = p1.x - x;
             float dy1 = p1.y - y;
@@ -532,8 +519,7 @@ public class Map {
             
             if (d1Sq < d2Sq) {
                 return p1;
-            }
-            else {
+            } else {
                 return p2;
             }
         }
@@ -551,8 +537,7 @@ public class Map {
         if (dx < 0) {
             fx = (float)Math.floor(x) - 0.00001f;
             fdx = -1;
-        }
-        else {
+        } else {
             fx = (float)Math.ceil(x);
             fdx = 1;
         }
@@ -562,8 +547,7 @@ public class Map {
         
         if (inversed) {
             return getCollisionPart3(fy, fx, fdy, fdx);
-        }
-        else {
+        } else {
             return getCollisionPart3(fx, fy, fdx, fdy);
         }
     }

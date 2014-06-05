@@ -46,8 +46,7 @@ public class MessageQueue {
     public String get(int i) {
         if (i < size()) {
             return messages.get(i).text;
-        }
-        else {
+        } else {
             return null;
         }
     }

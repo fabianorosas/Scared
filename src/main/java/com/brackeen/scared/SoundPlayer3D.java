@@ -45,11 +45,9 @@ public class SoundPlayer3D {
         
         if (dist < 0 || dist >= MAX_DIST) {
             return 0;
-        }
-        else if (dist <= 1) {
+        } else if (dist <= 1) {
             return 1;
-        }
-        else {
+        } else {
             return 1 / dist;
         }
     }

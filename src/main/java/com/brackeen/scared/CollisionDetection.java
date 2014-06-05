@@ -61,8 +61,7 @@ public class CollisionDetection {
         // Handle object collision 
         if (collidingEntities == null || collidingEntities.length == 0) {
             return;
-        }
-        else if (collidingEntities.length == 1) {
+        } else if (collidingEntities.length == 1) {
             
             Entity collidingEntity = collidingEntities[0];
             
@@ -75,15 +74,13 @@ public class CollisionDetection {
                 
                 if (actualDistance <= 0) {
                     movingEntity.setLocation(oldX, oldY);
-                }
-                else {
+                } else {
                     float goalDistance = movingEntity.getRadius() + collidingEntity.getRadius();
                     
                     movingEntity.setX(collidingEntity.getX() + collisionDx * goalDistance / actualDistance);
                     movingEntity.setY(collidingEntity.getY() + collisionDy * goalDistance / actualDistance);
                 }
-            }
-            else {
+            } else {
                 // Circle-Line Intersection
                 float angle = (float)Math.atan2(movingEntity.getY() - oldY, movingEntity.getX() - oldX);
                 float cos = (float)Math.cos(angle);
@@ -100,14 +97,12 @@ public class CollisionDetection {
                 
                 if (discriminant < 0) {
                     movingEntity.setLocation(oldX, oldY);
-                }
-                else {
+                } else {
                     float d = (float)Math.sqrt(discriminant);
                     movingEntity.setLocation(oldX + (u - d) * cos, oldY + (u - d) * sin);
                 } 
             }
-        }
-        else { // collidingObjects.length == 2
+        } else { // collidingObjects.length == 2
             // From "Intersection of two circles" by Paul Bourke
             // http://astronomy.swin.edu.au/~pbourke/geometry/2circle/
             
@@ -162,11 +157,9 @@ public class CollisionDetection {
             
             if (d1 < d2) {
                 movingEntity.setLocation(sx1, sy1);
-            }
-            else if (d1 > d2) {
+            } else if (d1 > d2) {
                 movingEntity.setLocation(sx2, sy2);
-            }
-            else {
+            } else {
                 movingEntity.setLocation(oldX, oldY);
             }
         }
@@ -273,14 +266,12 @@ public class CollisionDetection {
                             if (closestEntity == null) {
                                 closestEntity = entity;
                                 closestDist = d2;
-                            }
-                            else if (d2 < closestDist) {
+                            } else if (d2 < closestDist) {
                                 secondClosestEntity = closestEntity;
                                 secondClosestDist = closestDist;
                                 closestEntity = entity;
                                 closestDist = d2;
-                            }
-                            else if (secondClosestEntity == null || d2 < secondClosestDist) {
+                            } else if (secondClosestEntity == null || d2 < secondClosestDist) {
                                 secondClosestEntity = entity;
                                 secondClosestDist = d2;
                             }
@@ -292,11 +283,9 @@ public class CollisionDetection {
         
         if (closestEntity == null) {
             return null;
-        }
-        else if (secondClosestEntity == null) {
+        } else if (secondClosestEntity == null) {
             return new Entity[] { closestEntity };
-        }
-        else {
+        } else {
             return new Entity[] { closestEntity, secondClosestEntity };
         }
     }
@@ -314,8 +303,7 @@ public class CollisionDetection {
             if (isPlayer) {
                 map.notifyPlayerTouchedNoWall();
             }
-        }
-        else if (entity.onCollisionWithWallShouldSlide()) {
+        } else if (entity.onCollisionWithWallShouldSlide()) {
             float altX = entity.getX();
             float altY = entity.getY();
             boolean collisionX = false;
@@ -324,8 +312,7 @@ public class CollisionDetection {
             if ((collision & WALL_COLLISION_WEST) != 0) {
                 altX = (float)Math.floor(oldX) + entity.getRadius() + SLIDE_ERROR;
                 collisionX = true;
-            }
-            else if ((collision & WALL_COLLISION_EAST) != 0) {
+            } else if ((collision & WALL_COLLISION_EAST) != 0) {
                 altX = (float)Math.ceil(oldX) - entity.getRadius() - SLIDE_ERROR;
                 collisionX = true;
             }
@@ -333,8 +320,7 @@ public class CollisionDetection {
             if ((collision & WALL_COLLISION_NORTH) != 0) {
                 altY = (float)Math.floor(oldY) + entity.getRadius() + SLIDE_ERROR;
                 collisionY = true;
-            }
-            else if ((collision & WALL_COLLISION_SOUTH) != 0) {
+            } else if ((collision & WALL_COLLISION_SOUTH) != 0) {
                 altY = (float)Math.ceil(oldY) - entity.getRadius() - SLIDE_ERROR;
                 collisionY = true;
             }
@@ -342,15 +328,13 @@ public class CollisionDetection {
             if (collisionX && collisionY) {
                 if (checkWallCollision(oldX, oldY, altX, entity.getY(), entity.getRadius(), isPlayer) == WALL_COLLISION_NONE) {
                     altY = entity.getY();
-                }
-                else if (checkWallCollision(oldX, oldY, entity.getX(), altY, entity.getRadius(), isPlayer) == WALL_COLLISION_NONE) {
+                } else if (checkWallCollision(oldX, oldY, entity.getX(), altY, entity.getRadius(), isPlayer) == WALL_COLLISION_NONE) {
                     altX = entity.getX();
                 }
             }
             
             entity.setLocation(altX, altY);
-        }
-        else {
+        } else {
             float newX = entity.getX();
             float newY = entity.getY();
             
@@ -368,8 +352,7 @@ public class CollisionDetection {
                     collisionX = true;
                 }
                 
-            }
-            else if ((collision & WALL_COLLISION_EAST) != 0) {
+            } else if ((collision & WALL_COLLISION_EAST) != 0) {
                 cX1 = (float)Math.ceil(oldX) - entity.getRadius() - SLIDE_ERROR;
                 cY1 = oldY + (cX1 - oldX) * (newY - oldY) / (newX - oldX);
                 if (!map.isSolidAt((int)cX1, (int)cY1)) {
@@ -383,8 +366,7 @@ public class CollisionDetection {
                 if (!map.isSolidAt((int)cX2, (int)cY2)) {
                     collisionY = true;
                 }
-            }
-            else if ((collision & WALL_COLLISION_SOUTH) != 0) {
+            } else if ((collision & WALL_COLLISION_SOUTH) != 0) {
                 cY2 = (float)Math.ceil(oldY) - entity.getRadius() - SLIDE_ERROR;
                 cX2 = oldX + (cY2 - oldY) * (newX - oldX) / (newY - oldY);
                 if (!map.isSolidAt((int)cX2, (int)cY2)) {
@@ -401,22 +383,18 @@ public class CollisionDetection {
                     newX = cX1;
                     newY = cY1;
                     collisionY = false;
-                }
-                else {
+                } else {
                     newX = cX2;
                     newY = cY2;
                     collisionX = true;
                 }
-            }
-            else if (collisionX) {
+            } else if (collisionX) {
                 newX = cX1;
                 newY = cY1;
-            }
-            else if (collisionY) {
+            } else if (collisionY) {
                 newX = cX2;
                 newY = cY2;
-            }
-            else {
+            } else {
                 // no good "stop" result - go back to old location
                 entity.setLocation(oldX, oldY);
                 return;
@@ -458,15 +436,13 @@ public class CollisionDetection {
                     
                 if (tileX < originTileX && x < oldX) {
                     collision |= WALL_COLLISION_WEST;
-                }
-                else if (tileX > originTileX && x > oldX) {
+                } else if (tileX > originTileX && x > oldX) {
                     collision |= WALL_COLLISION_EAST;
                 }
                 
                 if (tileY < originTileY && y < oldY) {
                     collision |= WALL_COLLISION_NORTH;
-                }
-                else if (tileY > originTileY && y > oldY) {
+                } else if (tileY > originTileY && y > oldY) {
                     collision |= WALL_COLLISION_SOUTH;
                 }
                 

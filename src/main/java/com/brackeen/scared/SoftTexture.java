@@ -61,8 +61,7 @@ public class SoftTexture {
         this.data = new int[width * height];
         if (isPowerOfTwo(width) && width == height) {
             sizeBits = log2(width);
-        }
-        else {
+        } else {
             sizeBits = -1;
         }
     }
@@ -77,8 +76,7 @@ public class SoftTexture {
         this.data = getImageData(image);
         if (isPowerOfTwo(width) && width == height) {
             sizeBits = log2(width);
-        }
-        else {
+        } else {
             sizeBits = -1;
         }
     }
@@ -174,8 +172,7 @@ public class SoftTexture {
             
             if (srcOpaque) {
                 System.arraycopy(srcData, srcOffset, destData, destOffset, srcWidth);
-            }
-            else {
+            } else {
                 for (int j = 0; j < srcWidth; j++) {
                     int color = srcData[srcOffset + j];
 
