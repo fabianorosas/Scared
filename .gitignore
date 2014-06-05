@@ -1,5 +1,6 @@
 .DS_Store
 target/
+prints/
 .classpath
 .project
 .settings/org.eclipse.core.resources.prefs
