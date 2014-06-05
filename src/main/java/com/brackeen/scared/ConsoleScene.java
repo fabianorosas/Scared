@@ -102,7 +102,7 @@ public class ConsoleScene extends Scene {
             }
 
             public void keyReleased(KeyEvent ke) {
-                
+            	//Do nothing
             }
         });
     }

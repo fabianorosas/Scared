@@ -51,7 +51,7 @@ public class DoorAction implements Action {
     }
 
     public void unload() {
-        
+       //Do nothing 
     }
 
     public boolean isFinished() {

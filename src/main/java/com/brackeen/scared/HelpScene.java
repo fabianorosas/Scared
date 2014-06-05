@@ -37,7 +37,7 @@ public class HelpScene extends Scene {
         setKeyListener(new KeyListener() {
 
             public void keyTyped(KeyEvent ke) {
-
+            	//Do nothing
             }
 
             public void keyPressed(KeyEvent ke) {
@@ -47,7 +47,7 @@ public class HelpScene extends Scene {
             }
 
             public void keyReleased(KeyEvent ke) {
-                
+            	//Do nothing
             }
         });
     }

@@ -107,7 +107,7 @@ public class Entity implements Comparable<Entity> {
     }
     
     public void tick() {
-        
+        //Do nothing
     }
     
     public boolean isDeleted() {

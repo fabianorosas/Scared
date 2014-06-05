@@ -274,7 +274,7 @@ public class View {
     }
     
     public void onLoad() {
-        
+        //Do nothing
     }
     
     public final void unload() {
@@ -285,7 +285,7 @@ public class View {
     }
     
     public void onUnload() {
-        
+    	//Do nothing
     }
     
     public final void tick() {
@@ -296,7 +296,7 @@ public class View {
     }
     
     public void onTick() {
-        
+        //Do nothing
     }
     
     // Transforms
@@ -424,6 +424,6 @@ public class View {
     are drawn afterwards.
     */
     public void onDraw(Graphics2D g) {
-        
+    	//Do nothing
     }
 }
