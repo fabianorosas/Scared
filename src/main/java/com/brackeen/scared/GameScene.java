@@ -487,6 +487,8 @@ public class GameScene extends Scene {
             case KeyEvent.VK_C:
                 keyStrafeModifier = down;
                 break;
+            default:
+            	break;
         }
     }
     
@@ -728,7 +730,7 @@ public class GameScene extends Scene {
         }
         
         List<Entity> hitEnemies = map.getCollisions(Enemy.class, player.getX(), player.getY(), p.x, p.y);
-        if (hitEnemies.isEmpty() == false) {
+        if (!hitEnemies.isEmpty()) {
             for (Entity entity : hitEnemies) {
                 if (entity instanceof Enemy) {
                     ((Enemy)entity).hurt(6 + (int)(Math.random()*3)); //6..8

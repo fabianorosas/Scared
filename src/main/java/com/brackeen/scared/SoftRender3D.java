@@ -443,7 +443,7 @@ public class SoftRender3D extends View {
     }
     
     private void drawEntities(List<Entity> visibleEntities) {
-        if (visibleEntities.isEmpty() == false) {
+        if (!visibleEntities.isEmpty()) {
             int viewWidth = dstBuffer.getWidth();
             int viewHeight = dstBuffer.getHeight();
             float cameraX = toFloat(fCameraX);

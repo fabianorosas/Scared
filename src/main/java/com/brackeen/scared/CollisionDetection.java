@@ -91,7 +91,8 @@ public class CollisionDetection {
                 float u = x * cos + y * sin;
                 float D = y * cos - x * sin;
                 
-                float error = 0.005f; // I chose this value at random
+                 // I chose this value at random
+                float error = 0.005f;
                 float r = movingEntity.getRadius() + collidingEntity.getRadius() + error;
                 float discriminant = r * r - D * D;
                 
@@ -282,7 +283,7 @@ public class CollisionDetection {
         }
         
         if (closestEntity == null) {
-            return null;
+            return new Entity[0];
         } else if (secondClosestEntity == null) {
             return new Entity[] { closestEntity };
         } else {

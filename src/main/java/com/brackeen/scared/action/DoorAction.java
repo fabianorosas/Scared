@@ -107,6 +107,8 @@ public class DoorAction implements Action {
             case STAY_OPEN_FOREVER:
                 tile.setRenderState(0);
                 break;
+            default:
+            	break;
         }
     }
     
@@ -117,10 +119,7 @@ public class DoorAction implements Action {
         Player p = map.getPlayer();
         float dx = Math.abs(p.getX() - (x + 0.5f));
         float dy = Math.abs(p.getY() - (y + 0.5f));
-        if (dx < 1.5f && dy < 1.5f) {
-            return false;
-        } else {
-            return true;
-        }
+
+        return dx < 1.5f && dy < 1.5f;
     }
 }

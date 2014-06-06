@@ -55,13 +55,6 @@ public class Enemy extends Entity {
         setState(STATE_ASLEEP);
         
         switch (type) {
-        case 1: default:
-            health = 20;
-            STATE_TICKS[STATE_READY] = 18;
-            STATE_TICKS[STATE_AIM] = 40;
-            p = .1;
-            break;
-
         case 2:
             health = 30;
             STATE_TICKS[STATE_READY] = 12;
@@ -81,6 +74,12 @@ public class Enemy extends Entity {
             STATE_TICKS[STATE_READY] = 0;
             STATE_TICKS[STATE_AIM] = 12;
             p = .03;
+            break;
+        default:
+            health = 20;
+            STATE_TICKS[STATE_READY] = 18;
+            STATE_TICKS[STATE_AIM] = 40;
+            p = .1;
             break;
         }
     }
@@ -172,9 +171,6 @@ public class Enemy extends Entity {
             // When moving, randomly change to another move state
             int s = (int)Math.round(Math.random() * 6);
             switch (s) {
-                case 0: default:
-                    setState(STATE_TERMINATE);
-                    break;
                 case 1:
                     setState(STATE_MOVE_LEFT);
                     break;
@@ -193,6 +189,9 @@ public class Enemy extends Entity {
                     } else {
                         setState(STATE_TERMINATE);
                     }
+                    break;
+                default:
+                    setState(STATE_TERMINATE);
                     break;
             }
         }
@@ -304,6 +303,8 @@ public class Enemy extends Entity {
                     player.setKills(player.getKills() + 1);
                 }
                 break;
+            default:
+            	break;
         }
         
         if (!player.isFreezeEnemies()) {

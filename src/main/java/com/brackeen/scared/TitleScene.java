@@ -4,7 +4,6 @@ import com.brackeen.app.App;
 import com.brackeen.app.view.Button;
 import com.brackeen.app.view.ImageView;
 import com.brackeen.app.view.Scene;
-import com.brackeen.scared.entity.Player;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
