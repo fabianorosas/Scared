@@ -123,22 +123,102 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         while (canPopScene()) {
             popScene();
         }
-        if (bufferStrategy != null) {
-            bufferStrategy.dispose();
-            bufferStrategy = null;
-        }
+        bufferStrategy.dispose();
         for (BufferedAudio audio : loadedAudio.values()) {
             audio.dispose();
         }
         loadedAudio.clear();
         imageCache.clear();
         prevViewsWithTouchInside.clear();
-        currViewsWithTouchInside.clear();
         log.clear();
         bufferStrategy = null;
         canvas = null;
         removeAll();
     }
+
+    private void noStrategy(){
+    	removeAll();
+    	canvas = new Canvas();
+    	canvas.setSize(getWidth(), getHeight());
+    	canvas.setLocation(0, 0);
+    	setLayout(null);
+    	add(canvas);
+    	try {
+    		canvas.createBufferStrategy(2);
+    		bufferStrategy = canvas.getBufferStrategy();
+    	} catch (Exception ex) {
+    		// Do nothing
+    	}
+    	if (bufferStrategy == null) {
+    		canvas = null;
+    	} else {
+    		canvas.addMouseListener(this);
+    		canvas.addMouseMotionListener(this);
+    		canvas.addKeyListener(this);
+    		canvas.addFocusListener(this);
+    		canvas.setFocusTraversalKeysEnabled(false);
+    		canvas.requestFocus();
+    		lastTime = System.nanoTime();
+    		remainingTime = 0;
+    	}
+    }
+    
+    private void bufferStrategy(){
+    	View scene = null;
+
+    	scene = doTick(scene);
+    	placeCursor(scene);
+    	draw(scene);
+    	
+    	bufferStrategy.show();
+    }
+
+	private View doTick(View scene) {
+		double elapsedTime = (System.nanoTime() - lastTime) / 1000000000.0 + remainingTime;
+    	int ticks = Math.max(1, (int)(FRAME_RATE * elapsedTime));
+    	if (ticks > 4) {
+    		ticks = 4;
+    		remainingTime = 0;
+    	} else {
+    		remainingTime = Math.max(0, elapsedTime - ticks / FRAME_RATE);
+    	}
+    	for (int i = 0; i < ticks; i++) {
+    		if (sceneStack.isEmpty()) {
+    			pushScene(createFirstScene());
+    		}
+    		View nextScene = sceneStack.peek();
+    		nextScene.tick();
+    	}
+    	lastTime = System.nanoTime();
+		return nextScene;
+	}
+
+	private void draw(View scene) {
+		Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
+    	if (scene == null) {
+    		g.setColor(Color.BLACK);
+    		g.fillRect(0, 0, getWidth(), getHeight());
+    	} else {
+    		scene.draw(g);
+    	}
+    	g.dispose();
+	}
+
+	private void placeCursor(View scene) {
+		Cursor cursor = Cursor.getDefaultCursor();
+    	if (scene != null) {
+    		View pick = scene.pick(mouseX, mouseY);
+    		while (pick != null) {
+    			Cursor pickCursor = pick.getCursor();
+    			if (pickCursor != null) {
+    				cursor = pickCursor;
+    				break;
+    			}
+    			pick = pick.getSuperview();
+    		}
+    	}
+    	setCursor(cursor);
+	}
     
     private synchronized void tick() {
         if (App.getApp() == null) {
@@ -146,78 +226,9 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
             APP.set(this);
         }
         if (bufferStrategy == null) {
-            removeAll();
-            canvas = new Canvas();
-            canvas.setSize(getWidth(), getHeight());
-            canvas.setLocation(0, 0);
-            setLayout(null);
-            add(canvas);
-            try {
-                canvas.createBufferStrategy(2);
-                bufferStrategy = canvas.getBufferStrategy();
-            } catch (Exception ex) {
-                // Do nothing
-            }
-            if (bufferStrategy == null) {
-                canvas = null;
-            } else {
-                canvas.addMouseListener(this);
-                canvas.addMouseMotionListener(this);
-                canvas.addKeyListener(this);
-                canvas.addFocusListener(this);
-                canvas.setFocusTraversalKeysEnabled(false);
-                canvas.requestFocus();
-                lastTime = System.nanoTime();
-                remainingTime = 0;
-            }
-        }
-        if (bufferStrategy != null) {
-            
-            View scene = null;
-            
-            // Tick
-            double elapsedTime = (System.nanoTime() - lastTime) / 1000000000.0 + remainingTime;
-            int ticks = Math.max(1, (int)(FRAME_RATE * elapsedTime));
-            if (ticks > 4) {
-                ticks = 4;
-                remainingTime = 0;
-            } else {
-                remainingTime = Math.max(0, elapsedTime - ticks / FRAME_RATE);
-            }
-            for (int i = 0; i < ticks; i++) {
-                if (sceneStack.isEmpty()) {
-                    pushScene(createFirstScene());
-                }
-                scene = sceneStack.peek();
-                scene.tick();
-            }
-            lastTime = System.nanoTime();
-            
-            // Set cursor
-            Cursor cursor = Cursor.getDefaultCursor();
-            if (scene != null) {
-                View pick = scene.pick(mouseX, mouseY);
-                while (pick != null) {
-                    Cursor pickCursor = pick.getCursor();
-                    if (pickCursor != null) {
-                        cursor = pickCursor;
-                        break;
-                    }
-                    pick = pick.getSuperview();
-                }
-            }
-            setCursor(cursor);
-
-            // Draw
-            Graphics2D g = (Graphics2D)bufferStrategy.getDrawGraphics();
-            if (scene == null) {
-                g.setColor(Color.BLACK);
-                g.fillRect(0, 0, getWidth(), getHeight());
-            } else {
-                scene.draw(g);
-            }
-            g.dispose();
-            bufferStrategy.show();
+        	noStrategy();
+        } else {
+        	bufferStrategy();
         }
     }
     
@@ -362,7 +373,8 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         return pick;
     }
     
-    private void dispatchEnterEvents(View view, MouseEvent e) {
+    private void dispatchEnterEvents(View v, MouseEvent e) {
+    	View view = v;
         while (view != null) {
             currViewsWithTouchInside.add(view);
             
@@ -381,13 +393,15 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
                 l.mouseExited(e);
             }
         }
-        
-        // Swap
-        List<View> temp = prevViewsWithTouchInside;
+        swap();
+    }
+
+	private void swap() {
+		List<View> temp = prevViewsWithTouchInside;
         prevViewsWithTouchInside = currViewsWithTouchInside;
         currViewsWithTouchInside = temp;
         currViewsWithTouchInside.clear();
-    }
+	}
     
     public void mouseClicked(MouseEvent e) {
         View view = getMousePick(e);
