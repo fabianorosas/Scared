@@ -210,10 +210,8 @@ public class SoftRender3D extends View {
     Gets the view angle, in degrees, at location x within the view.
     */
     public float getAngleAt(int x) {
-        x /= pixelScale;
-        x = Math.max(0, x);
-        x = Math.min(x, rayAngleTable.length - 1);
-        return angleToDegrees((rayAngleTable[x] - cameraAngle) & NUM_DEGREES_MASK);
+        int pos = Math.min(Math.max(0, x / pixelScale), rayAngleTable.length - 1);
+        return angleToDegrees((rayAngleTable[pos] - cameraAngle) & NUM_DEGREES_MASK);
     }
     
     @Override
@@ -491,7 +489,8 @@ public class SoftRender3D extends View {
         }
     }
     
-    private void drawTextureSliver(SoftTexture srcTexture, boolean srcOpaque, int sliver, int depth, int dstX, int dstY, int dstHeight) {
+    private void drawTextureSliver(SoftTexture src, boolean srcOpaque, int sliver, int depth, int dstX, int dstY, int dstHeight) {
+        SoftTexture srcTexture = src;
         
         // Mip-mapping. Use half-size textures if available
         while (dstHeight < srcTexture.getHeight() && srcTexture.hasHalfSizeTexture()) {

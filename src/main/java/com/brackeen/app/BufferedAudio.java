@@ -82,7 +82,7 @@ public class BufferedAudio {
         for (int i = 0; i < maxSimultaneousCopies; i++) {
             Clip clip = null;
             try {
-                clip = AudioSystem.getClip();
+            	clip = AudioSystem.getClip();
                 clip.open(AudioSystem.getAudioInputStream(url));
             } catch (UnsupportedAudioFileException ex) {
                 throw new IOException(ex);

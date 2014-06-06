@@ -38,8 +38,9 @@ public class SoftTexture {
         return (n & (n - 1)) == 0;
     }
     
-    private static int log2(int n) {
-        int count = 0;
+    private static int log2(int x) {
+        int n = x;
+    	int count = 0;
         while (true) {
             n >>= 1;
             if (n == 0) {
@@ -135,11 +136,14 @@ public class SoftTexture {
     /**
         Draws the specified texture (source) onto this texture (dest).
     */
-    public void draw(SoftTexture src, int x, int y, int srcX, int srcY, int srcWidth, int srcHeight, boolean srcOpaque) {
-        
+    public void draw(SoftTexture src, int x, int y, int sX, int sY, int srcW, int srcH, boolean srcOpaque) {
+        int srcWidth = srcW;
+        int srcHeight = srcH;
         SoftTexture dest = this;
         int destX = x;
         int destY = y;
+        int srcX = sX;
+        int srcY = sY;
         
         // Clip to dest
         if (destX < 0) {

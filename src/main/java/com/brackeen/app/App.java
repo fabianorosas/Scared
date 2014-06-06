@@ -389,8 +389,6 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
         currViewsWithTouchInside.clear();
     }
     
-    // Propogate mouse events until it is consumed.
-    
     public void mouseClicked(MouseEvent e) {
         View view = getMousePick(e);
         while (view != null) {

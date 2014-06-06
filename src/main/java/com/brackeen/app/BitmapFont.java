@@ -43,10 +43,11 @@ public class BitmapFont {
     }
     
     public boolean canDisplay(char ch) {
-        if (Character.isLowerCase(ch) && !hasLowercase) {
-            ch = Character.toUpperCase(ch);
+    	int tmpCh = ch;
+        if (Character.isLowerCase(tmpCh) && !hasLowercase) {
+            tmpCh = Character.toUpperCase(tmpCh);
         }
-        return ch >= firstChar && ch < firstChar + numChars;
+        return tmpCh >= firstChar && tmpCh < firstChar + numChars;
     }
     
     public void drawString(Graphics2D g, String s) {
@@ -55,8 +56,8 @@ public class BitmapFont {
             int y = 0;
             for (int i = 0; i < s.length(); i++) {
                 char ch = s.charAt(i);
-                if (Character.isLowerCase(ch) && !hasLowercase) {
-                    ch = Character.toUpperCase(ch);
+                if (Character.isLowerCase(s.charAt(i)) && !hasLowercase) {
+                    ch = Character.toUpperCase(s.charAt(i));
                 }
                 if (ch >= firstChar && ch < firstChar + numChars) {
                     int charX = (ch - firstChar) * charWidth;
