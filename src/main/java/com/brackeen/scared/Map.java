@@ -552,11 +552,11 @@ public class Map {
     }
     
     private Point2D.Float getCollisionPart3(float x, float y, float dx, float dy) {
-        int tmpX = (int)x;
-        int tmpY = (int)y;
+        float tmpX = x;
+        float tmpY = y;
     	while (true) {
-            int tileX = tmpX;
-            int tileY = tmpY;
+            int tileX = (int)tmpX;
+            int tileY = (int)tmpY;
             if (isSolidAt(tileX, tileY)) {
                 return new Point2D.Float(tmpX, tmpY);
             }
