@@ -57,8 +57,8 @@ public class GameScene extends Scene {
     private static final int ACTION_NEW_LEVEL = 1;
     private static final int ACTION_WIN = 2;
         
-    private HashMap<String, SoftTexture> textureCache = new HashMap<String, SoftTexture>();
-    
+    private java.util.Map<String, SoftTexture> textureCache = new HashMap<String, SoftTexture>();
+  
     private boolean keyLeft = false;
     private boolean keyRight = false;
     private boolean keyDown = false;

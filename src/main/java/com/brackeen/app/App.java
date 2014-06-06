@@ -2,6 +2,7 @@ package com.brackeen.app;
 
 import com.brackeen.app.view.Scene;
 import com.brackeen.app.view.View;
+
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -24,7 +25,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
@@ -78,9 +81,9 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     
     private List<String> log = new ArrayList<String>();
     
-    private final HashMap<String, WeakReference<BufferedImage>> imageCache =
+    private final Map<String, WeakReference<BufferedImage>> imageCache =
             new HashMap<String, WeakReference<BufferedImage>>();
-    private final HashMap<String, BufferedAudio> loadedAudio = new HashMap<String, BufferedAudio>();
+    private final Map<String, BufferedAudio> loadedAudio = new HashMap<String, BufferedAudio>();
     private final Stack<Scene> sceneStack = new Stack<Scene>();
     private List<View> prevViewsWithTouchInside = new ArrayList<View>();
     private List<View> currViewsWithTouchInside = new ArrayList<View>();

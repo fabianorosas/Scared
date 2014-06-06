@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class Map {
     private int numSecrets = 0;
     private int numEnemies = 0;
     
-    public Map(HashMap<String, SoftTexture> textureCache, MessageQueue messageQueue, String mapName, Player oldPlayer) throws IOException {
+    public Map(java.util.Map<String, SoftTexture> textureCache, MessageQueue messageQueue, String mapName, Player oldPlayer) throws IOException {
         
         this.messageQueue = messageQueue;
         

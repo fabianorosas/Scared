@@ -151,7 +151,7 @@ public class SoftRender3D extends View {
     @param height height in pixels
     @param fovInDegrees field of view in degrees
     */
-    public SoftRender3D(HashMap<String, SoftTexture> textureCache, float width, float height) {
+    public SoftRender3D(java.util.Map<String, SoftTexture> textureCache, float width, float height) {
         this.fov = 60;
 
         fCosTable = new int[NUM_DEGREES];
