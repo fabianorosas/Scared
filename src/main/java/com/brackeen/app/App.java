@@ -174,6 +174,8 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     }
 
 	private View doTick(View scene) {
+		View nextScene = null;
+		
 		double elapsedTime = (System.nanoTime() - lastTime) / 1000000000.0 + remainingTime;
     	int ticks = Math.max(1, (int)(FRAME_RATE * elapsedTime));
     	if (ticks > 4) {
@@ -186,7 +188,7 @@ public abstract class App extends Applet implements MouseListener, MouseMotionLi
     		if (sceneStack.isEmpty()) {
     			pushScene(createFirstScene());
     		}
-    		View nextScene = sceneStack.peek();
+    		nextScene = sceneStack.peek();
     		nextScene.tick();
     	}
     	lastTime = System.nanoTime();
