@@ -7,31 +7,25 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 public class Button extends View implements MouseListener {
-    
-    public interface Listener {
+	
+	public interface Listener {
         public void buttonClicked(Button button);
     }
 
-    private enum State {
-        NORMAL,
-        HOVER,
-        PRESSED,
-    }
-    
-    private BufferedImage normalImage;
-    private BufferedImage hoverImage;
-    private BufferedImage pressedImage;
-    private BufferedImage normalSelectedImage;
-    private BufferedImage hoverSelectedImage;
-    private BufferedImage pressedSelectedImage;
-    private State state = State.NORMAL;
-    private boolean selected = false;
     private boolean armed = false;
     private View rootWhenArmed;
     private Listener buttonListener;
+    private ButtonState normal;
+    private ButtonState hover;
+    private ButtonState pressed;
+    private ButtonState currentState;
     
-    public Button(BufferedImage normalImage) {
-        setNormalImage(normalImage);
+    public Button(BufferedImage normalImage, BufferedImage hoverImage, BufferedImage pressedImage) {
+    	normal = new Normal(normalImage);
+    	hover = new Hover(hoverImage);
+    	pressed = new Pressed(pressedImage);
+    	    	
+    	currentState = normal;
         setMouseListener(this);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sizeToFit();
@@ -55,121 +49,31 @@ public class Button extends View implements MouseListener {
         this.buttonListener = buttonListener;
     }
     
-    private void setState(State state) {
-        this.state = state;
-    }
-    
-    public BufferedImage getHoverImage() {
-        return hoverImage;
-    }
-
-    public void setHoverImage(BufferedImage hoverImage) {
-        this.hoverImage = hoverImage;
-    }
-
-    public BufferedImage getHoverSelectedImage() {
-        return hoverSelectedImage;
-    }
-
-    public void setHoverSelectedImage(BufferedImage hoverSelectedImage) {
-        this.hoverSelectedImage = hoverSelectedImage;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean isSelected) {
-        this.selected = isSelected;
-    }
-
-    public BufferedImage getNormalImage() {
-        return normalImage;
-    }
-
-    public void setNormalImage(BufferedImage normalImage) {
-        this.normalImage = normalImage;
-    }
-
-    public BufferedImage getNormalSelectedImage() {
-        return normalSelectedImage;
-    }
-
-    public void setNormalSelectedImage(BufferedImage normalSelectedImage) {
-        this.normalSelectedImage = normalSelectedImage;
-    }
-
-    public BufferedImage getPressedImage() {
-        return pressedImage;
-    }
-
-    public void setPressedImage(BufferedImage pressedImage) {
-        this.pressedImage = pressedImage;
-    }
-
-    public BufferedImage getPressedSelectedImage() {
-        return pressedSelectedImage;
-    }
-
-    public void setPressedSelectedImage(BufferedImage pressedSelectedImage) {
-        this.pressedSelectedImage = pressedSelectedImage;
-    }
-    
     private BufferedImage getDisplayedImage() {
-        if (selected) {
-            BufferedImage defaultImage = normalSelectedImage;
-            if (defaultImage == null) {
-                defaultImage = normalImage;
-            }
-            if (state == State.NORMAL) {
-                return defaultImage;
-            } else if (state == State.HOVER) {
-                if (hoverSelectedImage != null) {
-                    return hoverSelectedImage;
-                } else {
-                    return defaultImage;
-                }
-            } else {
-                if (pressedSelectedImage != null) {
-                    return pressedSelectedImage;
-                } else {
-                    return defaultImage;
-                }
-            }
-        } else {
-            if (state == State.NORMAL) {
-                return normalImage;
-            } else if (state == State.HOVER) {
-                if (hoverImage != null) {
-                    return hoverImage;
-                } else {
-                    return normalImage;
-                }
-            } else {
-                if (pressedImage != null) {
-                    return pressedImage;
-                } else {
-                    return normalImage;
-                }
-            }
-        }
-    }
+		if(currentState.isSelected()){
+			return currentState.getSelectedImage();
+		} else{
+			return currentState.getImage();
+		}
+	}
 
     @Override
     public void onDraw(Graphics2D g) {
-        g.drawImage(getDisplayedImage(), null, null);
+    	g.drawImage(getDisplayedImage(), null, null);
     }
 
     public void mouseEntered(MouseEvent me) {
         if (armed && me.getID() == MouseEvent.MOUSE_DRAGGED) {
-            setState(State.PRESSED);
-        } else if (me.getID() == MouseEvent.MOUSE_MOVED || me.getID() == MouseEvent.MOUSE_ENTERED) {
-            setState(State.HOVER);
+            currentState = pressed;
+        }
+        
+        if (me.getID() == MouseEvent.MOUSE_MOVED || me.getID() == MouseEvent.MOUSE_ENTERED) {
+            currentState = hover;
         }
     }
 
     public void mouseExited(MouseEvent me) {
-        setState(State.NORMAL);
+        currentState = normal;
     }
 
     public void mouseClicked(MouseEvent me) {
@@ -177,7 +81,7 @@ public class Button extends View implements MouseListener {
     }
 
     public void mousePressed(MouseEvent me) {
-        setState(State.PRESSED);
+        currentState = pressed;
         rootWhenArmed = getRoot();
         armed = true;
     }
@@ -187,12 +91,12 @@ public class Button extends View implements MouseListener {
         View view = root.pick(me.getX(), me.getY());
         boolean isOver = isAncestorOf(view);
         boolean isSameRoot = root != null && rootWhenArmed == root;
-        boolean isTap = armed && state == State.PRESSED && isOver && isSameRoot;
+        boolean isTap = armed && currentState == pressed && isOver && isSameRoot;
 
         if (isOver) {
-            setState(State.HOVER);
+            currentState = hover;
         } else {
-            setState(State.NORMAL);
+            currentState = normal;
         }
         rootWhenArmed = null;
         armed = false;

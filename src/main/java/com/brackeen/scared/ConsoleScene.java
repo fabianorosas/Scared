@@ -38,22 +38,21 @@ public class ConsoleScene extends Scene {
         
         int borderSize = 10;
         
-        Button backButton = new Button(app.getImage("/ui/back_button_normal.png"));
-        backButton.setHoverImage(app.getImage("/ui/back_button_hover.png"));
-        backButton.setPressedImage(app.getImage("/ui/back_button_pressed.png"));
+        Button backButton = new Button(app.getImage("/ui/back_button_normal.png"),
+        							   app.getImage("/ui/back_button_hover.png"),
+        							   app.getImage("/ui/back_button_pressed.png"));
         backButton.setLocation(getWidth() / 2 - borderSize/2, getHeight() - borderSize);
         backButton.setAnchor(1, 1);
         backButton.setButtonListener(new Button.Listener() {
-
             public void buttonClicked(Button button) {
                 App.getApp().popScene();
             }
         });
         addSubview(backButton);
         
-        Button helpButton = new Button(app.getImage("/ui/help_button_normal.png"));
-        helpButton.setHoverImage(app.getImage("/ui/help_button_hover.png"));
-        helpButton.setPressedImage(app.getImage("/ui/help_button_pressed.png"));
+        Button helpButton = new Button(app.getImage("/ui/help_button_normal.png"),
+        							   app.getImage("/ui/help_button_hover.png"),
+        							   app.getImage("/ui/help_button_pressed.png"));
         helpButton.setLocation(getWidth() / 2 + borderSize/2, getHeight() - borderSize);
         helpButton.setAnchor(0, 1);
         helpButton.setButtonListener(new Button.Listener() {
