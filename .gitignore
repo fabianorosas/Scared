@@ -8,4 +8,5 @@ prints/
 .settings/org.eclipse.m2e.core.prefs
 .settings/org.sonar.ide.eclipse.core.prefs
 sonar-project.properties
+.sonar/
 
