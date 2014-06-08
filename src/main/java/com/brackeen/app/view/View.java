@@ -228,7 +228,8 @@ public class View {
         return root;
     }
     
-    public boolean isAncestorOf(View view) {
+    public boolean isAncestorOf(View v) {
+    	View view = v;
         while (view != null) {
             if (view == this) {
                 return true;
@@ -366,24 +367,21 @@ public class View {
         if (!isVisible() || getOpacity() <= 0) {
             return null;
         } else {
-            boolean inside = contains(worldX, worldY);
-            if (isClippedToBounds() && !inside) {
-                return null;
-            }
-            for (int i = subviews.size() - 1; i >= 0; i--) {
-                View pickedView = subviews.get(i).pick(worldX, worldY, allowDisabledViews);
-                if (pickedView != null) {
-                    return pickedView;
-                }
-            }
-            
-            boolean isPick = inside && (allowDisabledViews || isEnabled());
-
-            return isPick ? this : null;
+            return pickView(worldX, worldY, allowDisabledViews);
         }
     }
-    
-    // Drawing
+
+	private View pickView(float worldX, float worldY, boolean allowDisabledViews) {
+		for (int i = subviews.size() - 1; i >= 0; i--) {
+		    View pickedView = subviews.get(i).pick(worldX, worldY, allowDisabledViews);
+		    if (pickedView != null) {
+		        return pickedView;
+		    }
+		}
+		boolean inside = contains(worldX, worldY);
+		boolean isPick = inside && (allowDisabledViews || isEnabled());
+		return isPick ? this : null;
+	}
     
     public final void draw(Graphics2D g) {
         if (!visible || opacity <= 0) {
