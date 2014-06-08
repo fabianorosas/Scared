@@ -21,9 +21,9 @@ public class Button extends View implements MouseListener {
     private ButtonState currentState;
     
     public Button(BufferedImage normalImage, BufferedImage hoverImage, BufferedImage pressedImage) {
-    	normal = new Normal(normalImage);
-    	hover = new Hover(hoverImage);
-    	pressed = new Pressed(pressedImage);
+    	normal = Normal.getInstance(normalImage);
+    	hover = Hover.getInstance(hoverImage);
+    	pressed = Pressed.getInstance(pressedImage);
     	    	
     	currentState = normal;
         setMouseListener(this);

@@ -25,11 +25,22 @@ public class Player extends Entity {
     private boolean freezeEnemies = false;
     private boolean isAlive = true;
     
-    public Player(Map map) {
+    private static Player instance;
+    
+    private Player(Map map) {
         super(0.25f, 0, 0);
         this.map = map;
         setZ(0.5f);
     }
+    
+    public static synchronized Player getInstance(Map map)
+	{
+		if (instance == null)
+			instance = new Player(map);
+
+		return instance;
+	}
+    
 
     public boolean isGodMode() {
         return godMode;

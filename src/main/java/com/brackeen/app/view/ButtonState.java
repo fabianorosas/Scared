@@ -7,7 +7,9 @@ public abstract class ButtonState {
 	private BufferedImage selectedImage;
 	private boolean selected;
 	
-	public ButtonState(BufferedImage image) {
+	protected static ButtonState instance;
+	
+	protected ButtonState(BufferedImage image) {
         setImage(image);
     }
 	

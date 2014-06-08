@@ -54,7 +54,7 @@ public class Map {
         generatorOnTexture = textureCache.get("generator01.png");
         exitButtonOnTexture = textureCache.get("exit01.png");
         
-        player = new Player(this);
+        player = Player.getInstance(this);
         if (oldPlayer != null) {
             player.setHealth(Math.max(oldPlayer.getHealth(), player.getHealth()));
             player.setAmmo(Math.max(oldPlayer.getAmmo(), player.getAmmo()));

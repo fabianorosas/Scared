@@ -92,7 +92,7 @@ public class GameScene extends Scene {
     private SoftTexture[] blastTextures = new SoftTexture[3];
     
     // HUD
-    private MessageQueue messageQueue = new MessageQueue(4);
+    private MessageQueue messageQueue = MessageQueue.getInstance(4);
     private Label[] messageLabels = new Label[4];
     private Label focusLostLabel;
     private boolean paused;

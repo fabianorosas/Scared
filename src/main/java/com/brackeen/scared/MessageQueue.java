@@ -18,11 +18,19 @@ public class MessageQueue {
     
     private List<Message> messages;
     private final int maxSize;
-
-    public MessageQueue(int size) {
+    private static MessageQueue instance;
+    
+    private MessageQueue(int size) {
         maxSize = size;
         messages = new ArrayList<Message>();
     }
+    
+    public static synchronized MessageQueue getInstance(int size) {
+		if (instance == null)
+			instance = new MessageQueue(size);
+
+		return instance;
+	}
     
     public void tick() {
         Iterator<Message> i = messages.iterator();

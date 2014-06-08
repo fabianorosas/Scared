@@ -335,10 +335,6 @@ public class View {
         }
     }
     
-    private boolean isClippedToBounds() {
-        return false;
-    }
-    
     public Point2D.Float getLocalLocation(float worldX, float worldY) {
         updateTransforms();
         Point2D.Float src = new Point2D.Float(worldX, worldY);
