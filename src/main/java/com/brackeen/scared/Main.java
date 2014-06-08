@@ -2,12 +2,15 @@ package com.brackeen.scared;
 
 import com.brackeen.app.App;
 import com.brackeen.app.view.Scene;
+import com.brackeen.scared.scene.TitleScene;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 

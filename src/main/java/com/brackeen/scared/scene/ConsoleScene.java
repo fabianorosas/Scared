@@ -1,4 +1,4 @@
-package com.brackeen.scared;
+package com.brackeen.scared.scene;
 
 import com.brackeen.app.App;
 import com.brackeen.app.BitmapFont;
@@ -6,6 +6,7 @@ import com.brackeen.app.view.Button;
 import com.brackeen.app.view.Label;
 import com.brackeen.app.view.Scene;
 import com.brackeen.app.view.View;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

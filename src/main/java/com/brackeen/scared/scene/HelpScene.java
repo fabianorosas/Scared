@@ -1,4 +1,4 @@
-package com.brackeen.scared;
+package com.brackeen.scared.scene;
 
 import com.brackeen.app.App;
 import com.brackeen.app.view.Button;
